@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Date</th>
+    <th>Registration closes</th>
+  </tr>
+{% for event in event_list %}
+  <tr>
+    <th>{{ event.name }}</th>
+    <th>{{ event.date }}</th>
+    <th>{{ event.close }}</th>
+  </tr>
+{% endfor %}
+{% endblock content %}
