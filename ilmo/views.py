@@ -11,5 +11,4 @@ def get_all_events(request):
     return HttpResponse(html)
 def index(request):
     t = get_template('list.html')
-    return HttpResponse("Hello world")
-# Create your views here.
+    return HttpResponse("Welcome to Ilmo - Event Registration")
