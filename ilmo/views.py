@@ -7,8 +7,9 @@ from django.http import HttpResponse
 def get_all_events(request):
     events = Event.objects.all()
     t = get_template('list.html')
-    html = t.render(Context({'event_list' : events, 'page_title' : 'Ilmo'}))
+    html = t.render(Context({'event_list' : events}))
     return HttpResponse(html)
 def index(request):
-    t = get_template('list.html')
-    return HttpResponse("Welcome to Ilmo - Event Registration")
+    t = get_template('index.html')
+    html = t.render(Context({'content' : 'This is Ilmo App'}))
+    return HttpResponse(html)
