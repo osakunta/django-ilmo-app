@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load cms_tags %}
+
+{% block title %}{% page_attribute "page_title" %}{% endblock title %}
+
+{% block content %}
+<h1>{{event.name}}</h1>
+<table>
+  <tr>
+    <td>Event date</td>
+    <td>{{event.event_date}}</td>
+  </tr>
+  <tr>
+    <td>Place</td>
+    <td>{{place.name}}</td>
+  </tr>
+  <tr>
+    <td>FB URL</td>
+    <td>{{event.fb_url}}</td>
+  </tr>
+  <tr>
+    <td>Registration closes</td>
+    <td>{{event.registration_date}}</td>
+  </tr>
+</table>
+<p>{{event.description}}</p>
+<h2>Attendees</h2>
+{% for attendee in attendees %}
+<p>{{attendee.attendee_name}}</p>
+{% endfor %}
+{% endblock content %}
