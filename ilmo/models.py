@@ -1,21 +1,14 @@
 from django.db import models
 
 # DB MODELS
-class Attendee(models.Model):
-    name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=50,blank=True)
-    email = models.CharField(max_length=50,blank=True)
-    other = models.CharField(max_length=500,blank=True)
-
-class Address(models.Model):
-    address_name = models.CharField(max_length=50)
-    zip_code = models.CharField(max_length=50)
-    city = models.CharField(max_length=50)
-    region = models.CharField(max_length=50,blank=True)
-
 class Place(models.Model):
     name = models.CharField(max_length=50)
-    address = models.ForeignKey(Address)
+    address = models.CharField(max_length=50,blank=True)
+    zip_code = models.CharField(max_length=50,blank=True)
+    city = models.CharField(max_length=50,blank=True)
+
+    def __str__(self):
+        return self.name
 
 class Event(models.Model):
     name = models.CharField(max_length=50)
@@ -26,7 +19,16 @@ class Event(models.Model):
     image_urls = models.CharField(max_length=1000,blank=True)
     description = models.CharField(max_length=5000)
 
+    def __str__(self):
+        return self.name
+
 class EventAttendee(models.Model):
     event = models.ForeignKey(Event)
-    attendee = models.ForeignKey(Attendee)
+    attendee_name = models.CharField(max_length=50)
+    attendee_email = models.CharField(max_length=50,blank=True)
+    attendee_phone = models.CharField(max_length=50,blank=True)
+    attendee_details = models.CharField(max_length=500,blank=True)
     registration_date = models.DateField()
+
+    def __str__(self):
+        return self.name
