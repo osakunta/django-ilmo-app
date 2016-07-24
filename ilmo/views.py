@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 from .models import Event,EventAttendee,Place
-from .forms import EventForm
+from .forms import get_form
 
 def get_all_events(request):
     events = Event.objects.all()
@@ -19,12 +19,11 @@ def index(request):
 
 def parse_event_form(request,event_id):
     event_details = get_event_details(event_id)
+    reference = event_details['event'].reference
     if request.method == 'POST':
-        form = EventForm(request.POST)
-        if form.is_valid():
-            return HttpResponseDirect('/thanks/')
+        form = get_form(reference)
     else:
-        form = EventForm()
+        form = get_form(reference)
     data = merge_dicts(event_details,{'form' : form})
     return render(request, 'registration_form.html',data)
 

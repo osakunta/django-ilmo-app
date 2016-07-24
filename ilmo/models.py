@@ -12,10 +12,12 @@ class Place(models.Model):
 
 class Event(models.Model):
     name = models.CharField(max_length=50)
+    reference = models.CharField(max_length=50)
     event_date = models.DateTimeField()
     place = models.ForeignKey(Place)
     close_date = models.DateTimeField()
     fb_url = models.URLField(blank=True)
+    capacity = models.PositiveIntegerField()
     image_urls = models.CharField(max_length=1000,blank=True)
     description = models.CharField(max_length=5000)
 
