@@ -24,7 +24,7 @@
   </tr>
 </table>
 <p>{{event.description}}</p>
-<h2>Attendees</h2>
+<h2>Attendees ({{ attendees|length }})</h2>
 {% for attendee in attendees %}
 <p>{{attendee.attendee_name}}</p>
 {% endfor %}

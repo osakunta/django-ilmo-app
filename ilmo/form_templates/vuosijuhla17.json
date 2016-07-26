@@ -1,9 +1,9 @@
 [
         {"type": "text","name": "name","label": "Nimi","required" : 1},
         {"type": "email","name": "email","label": "Sähköposti","required" : 1},
-        {"type": "select","name": "status","label": "Olen","options": [{"name" : "Fuksi", "value" : "fuksi"},{"name" : "Civis", "value" : "civis"}],"required" : 1},
+        {"type": "select","name": "status","label": "Olen","options": {"Fuksi":"Fuksi","Civis":"Civis","Seniori":"Seniori"},"required" : 1},
         {"type": "text","name": "org","label": "Minkä tai mistä, jos ei SatO"},
-        {"type": "select","name": "meal","label": "Pääruoka","options": [{"name" : "Liha", "value" : "liha"},{"name" : "Kasvis", "value" : "fuksi"}],"required" : 1},
+        {"type": "select","name": "meal","label": "Pääruoka","options": {"Liha":"Liha","Kasvis":"Kasvis"},"required" : 1},
         {"type": "text","name": "food","label": "Erityisruokavalio (allergiat)"},
         {"type": "text","name": "avec","label": "Avec (ilmottaudu myös erikseen)"},
         {"type": "checkbox","name": "sillis","label": "Ilmoittaudun myös sillikselle"},
