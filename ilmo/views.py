@@ -5,6 +5,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 
 from .models import Event,EventAttendee,Place
 from .forms import get_form
+from .utils import save_event_attendee,merge_dicts
 
 import datetime
 
@@ -42,18 +43,3 @@ def get_event_details(event_id):
     attendees = EventAttendee.objects.filter(event=event_id)
     place = Place.objects.get(id=event.place_id)
     return {'event' : event, 'attendees' : attendees, 'place' : place}
-
-def merge_dicts(*args):
-    res = {}
-    for dict in args:
-        res.update(dict)
-    return res
-
-def save_event_attendee(event_object, data):
-    ea = EventAttendee(event=event_object,
-    attendee_name=data.pop('name','N/A'),
-    attendee_email=data.pop('email','N/A'),
-    attendee_phone=data.pop('phone','N/A'),
-    attendee_details=str(data),
-    registration_date=datetime.datetime.now())
-    ea.save()
