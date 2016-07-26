@@ -6,6 +6,8 @@ from django.http import HttpResponse,HttpResponseRedirect
 from .models import Event,EventAttendee,Place
 from .forms import get_form
 
+import datetime
+
 def get_all_events(request):
     events = Event.objects.all()
     t = get_template('list.html')
@@ -28,7 +30,7 @@ def parse_event_form(request,event_id):
     if request.method == 'POST':
         form = get_form(reference)(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
+            save_event_attendee(event_details['event'],form.cleaned_data)
             return HttpResponseRedirect('/ilmo/event/' + event_id + '/register')
     else:
         form = get_form(reference)
@@ -46,3 +48,12 @@ def merge_dicts(*args):
     for dict in args:
         res.update(dict)
     return res
+
+def save_event_attendee(event_object, data):
+    ea = EventAttendee(event=event_object,
+    attendee_name=data.pop('name','N/A'),
+    attendee_email=data.pop('email','N/A'),
+    attendee_phone=data.pop('phone','N/A'),
+    attendee_details=str(data),
+    registration_date=datetime.datetime.now())
+    ea.save()
