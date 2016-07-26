@@ -28,7 +28,8 @@
 {% for attendee in attendees %}
 <p>{{attendee.attendee_name}}</p>
 {% endfor %}
-<form action="/ilmo/event/{{event.id}}/register" method="post">
+<form action="/fi/ilmo/event/{{event.id}}/" method="post">
+  {% csrf_token %}
   {{ form }}
   <input type="Submit" value="submit" />
 </form>

@@ -5,5 +5,6 @@ from . import views
 urlpatterns = [
     url(r'^$', views.index),
     url(r'^events/$',views.get_all_events),
-    url(r'^event/(\d+)/$',views.parse_event_form)
+    url(r'^event/(\d+)/$',views.parse_event_form),
+    url(r'^event/\d+/register/$',views.thanks)
 ]

@@ -1,5 +1,4 @@
 from django import forms
-from django.forms.util import ErrorList
 import json
 import os
 
