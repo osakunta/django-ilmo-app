@@ -13,14 +13,15 @@ class Place(models.Model):
 
 class Event(models.Model):
     name = models.CharField(max_length=50)
-    reference = models.CharField(max_length=50)
+    reference = models.CharField(max_length=50,verbose_name="Form to use")
     event_date = models.DateTimeField()
     place = models.ForeignKey(Place)
     close_date = models.DateTimeField()
     fb_url = models.URLField(blank=True)
     capacity = models.PositiveIntegerField()
-    image_urls = models.CharField(max_length=1000,blank=True)
+    image_url = models.CharField(max_length=1000,blank=True)
     description = models.TextField(max_length=5000)
+    backup = models.BooleanField(verbose_name="Accept backup seats?",default=True)
 
     def __str__(self):
         return self.name
@@ -43,6 +44,7 @@ class EventAttendee(models.Model):
     attendee_name = models.CharField(max_length=50)
     attendee_email = models.CharField(max_length=50,blank=True)
     attendee_phone = models.CharField(max_length=50,blank=True)
+    attendee_gender = models.CharField(max_length=50,blank=True)
     attendee_details = models.CharField(max_length=500,blank=True)
     registration_date = models.DateField()
 

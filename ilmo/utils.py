@@ -37,8 +37,10 @@ def export_eventattendees_csv(modeladmin,request,queryset):
 export_eventattendees_csv.short_description = 'Export selected to CSV'
 
 def save_event_attendee(event_object, data):
+    gender = get_gender(data['name'])
     ea = EventAttendee(event=event_object,
     attendee_name=data.pop('name','N/A'),
+    attendee_gender=gender,
     attendee_email=data.pop('email','N/A'),
     attendee_phone=data.pop('phone','N/A'),
     attendee_details=str(data),
@@ -50,6 +52,30 @@ def merge_dicts(*args):
     for dict in args:
         res.update(dict)
     return res
+
+
+# TODO: PUT THE NAMES INTO DATABASE
+
+def get_gender_lists():
+    male_file = open('ilmo-app/ilmo/resources/names-male.txt')
+    males = [line.rstrip() for line in male_file]
+    male_file.close()
+    female_file = open('ilmo-app/ilmo/resources/names-female.txt')
+    females = [line.rstrip() for line in female_file]
+    female_file.close()
+    return males,females
+
+def get_gender(name):
+    males,females = get_gender_lists()
+    print(males)
+    first_name = name.split(" ")[0]
+    print(first_name)
+    if first_name in males:
+        return "male"
+    elif first_name in females:
+        return "female"
+    else:
+        return "unknown"
 
 class FieldGenerator():
     formfields = {}
