@@ -82,7 +82,6 @@ class FieldGenerator():
         return forms.IntegerField(**options)
 
     def create_field_for_select(self, field, options):
-        print(field['options'])
         options['choices']  = [(k,v) for k,v in field['options'].items()]
         return forms.ChoiceField(**options)
 

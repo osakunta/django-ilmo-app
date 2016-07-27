@@ -11,19 +11,13 @@ import datetime
 
 def get_all_events(request):
     events = Event.objects.all()
-    t = get_template('list.html')
-    html = t.render(Context({'event_list' : events}))
-    return HttpResponse(html)
+    return render(request,'list.html',{'event_list' : events})
 
 def index(request):
-    t = get_template('index.html')
-    html = t.render(Context({'content' : 'This is Ilmo App'}))
-    return HttpResponse(html)
+    return render(request,'index.html',{'content' : "This is Ilmo App"})
 
 def thanks(request):
-    t = get_template('index.html')
-    html = t.render(Context({'content' : "Thank you for registration"}))
-    return HttpResponse(html)
+    return render(request,'index.html',{'content' : "Thank you for registration"})
 
 def parse_event_form(request,event_id):
     event_details = get_event_details(event_id)
