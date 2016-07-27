@@ -58,7 +58,7 @@ def get_gender_lists():
     males = [line.rstrip() for line in male_file]
     male_file.close()
     female_file = open('ilmo-app/ilmo/resources/names-female.txt')
-    females = [line.rstrip(). for line in female_file]
+    females = [line.rstrip() for line in female_file]
     female_file.close()
     return males,females
 
