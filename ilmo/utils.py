@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.utils import timezone
 import json
 import csv
+import os
 
 def format_to_json(data):
     return data.replace("'","\"").replace("False","\"No\"").replace("True","\"Yes\"")
@@ -54,10 +55,10 @@ def merge_dicts(*args):
     return res
 
 def get_gender_lists():
-    male_file = open('ilmo-app/ilmo/resources/names-male.txt')
+    male_file = open(os.path.dirname(__file__) + '/resources/names-male.txt')
     males = [line.rstrip() for line in male_file]
     male_file.close()
-    female_file = open('ilmo-app/ilmo/resources/names-female.txt')
+    female_file = open(os.path.dirname(__file__) + '/resources/names-female.txt')
     females = [line.rstrip() for line in female_file]
     female_file.close()
     return males,females

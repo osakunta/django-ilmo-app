@@ -44,3 +44,4 @@ There are sample templates in ilmo/templates folder that can be used for testing
 ## Forms
 Forms for populating EventAttendee table are done with .json templates in /ilmo/form_templates. The json keys which are defined in the EventAttendee model are saved into model and additional fields are saved under attendee_details key as a string representation of a Python dictionary. Thus only keys defined explicitly in the model can be used for querying data.
 
+Currently supporting following field types: text, email, textarea, integer, select, checkbox
