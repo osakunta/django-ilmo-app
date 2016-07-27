@@ -2,6 +2,7 @@ from django.template.loader import get_template
 from django.template import Context
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
+from django.utils import timezone
 
 from .models import Event,EventAttendee,Place
 from .forms import get_form
@@ -11,6 +12,10 @@ import datetime
 
 def get_all_events(request):
     events = Event.objects.all()
+    return render(request,'list.html',{'event_list' : events})
+
+def get_coming_events(request):
+    events = Event.objects.filter(event_date__gte=timezone.now())
     return render(request,'list.html',{'event_list' : events})
 
 def index(request):
