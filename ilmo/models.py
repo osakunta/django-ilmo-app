@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 # DB MODELS
 class Place(models.Model):
@@ -19,10 +20,23 @@ class Event(models.Model):
     fb_url = models.URLField(blank=True)
     capacity = models.PositiveIntegerField()
     image_urls = models.CharField(max_length=1000,blank=True)
-    description = models.CharField(max_length=5000)
+    description = models.TextField(max_length=5000)
 
     def __str__(self):
         return self.name
+
+    def is_past(self):
+        if timezone.now() > self.close_date:
+            return True
+        return False
+
+    def is_full(self):
+        count = EventAttendee.objects.filter(event__id=self.id).count()
+        print(self.capacity)
+        if self.capacity is not None:
+            if self.capacity < count:
+                return True
+        return False
 
 class EventAttendee(models.Model):
     event = models.ForeignKey(Event)

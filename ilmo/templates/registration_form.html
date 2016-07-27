@@ -14,10 +14,12 @@
     <td>Place</td>
     <td>{{place.name}}</td>
   </tr>
+  {% if event.fb_url %}
   <tr>
     <td>FB URL</td>
     <td>{{event.fb_url}}</td>
   </tr>
+  {% endif %}
   <tr>
     <td>Registration closes</td>
     <td>{{event.close_date}}</td>
@@ -28,9 +30,15 @@
 {% for attendee in attendees %}
 <p>{{attendee.attendee_name}}</p>
 {% endfor %}
+{% if event.is_full %}
+<p>Event is full :(</p>
+{% elif event.is_past %}
+<p>Registration time has past :|</p>
+{% else %}
 <form action="/fi/ilmo/event/{{event.id}}/" method="post">
   {% csrf_token %}
   {{ form }}
   <input type="Submit" value="submit" />
 </form>
+{% endif %}
 {% endblock content %}
