@@ -103,7 +103,7 @@ class FieldGenerator():
         return forms.IntegerField(**options)
 
     def create_field_for_select(self, field, options):
-        options['choices']  = [(k,v) for k,v in field['options'].items()]
+        options['choices']  = [(i,i) for i in field['options']]
         return forms.ChoiceField(**options)
 
     def create_field_for_checkbox(self, field, options):
