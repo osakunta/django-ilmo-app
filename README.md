@@ -27,3 +27,20 @@ python manage.py migrate
 ```
 This is Ilmo App
 ```
+
+## Models
+- Place
+- Event
+- EventAttendee
+
+Objects of these models can be saved either using CLI (django shell or manual database inserts) or admin interface
+
+## Views
+With the current views you can list all events, show event details and register for event
+
+## Templates
+There are sample templates in ilmo/templates folder that can be used for testing out
+
+## Forms
+Forms for populating EventAttendee table are done with .json templates in /ilmo/form_templates. The json keys which are defined in the EventAttendee model are saved into model and additional fields are saved under attendee_details key as a string representation of a Python dictionary. Thus only keys defined explicitly in the model can be used for querying data.
+
