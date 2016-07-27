@@ -2,7 +2,7 @@ from .models import Event,EventAttendee,Place
 from django import forms
 from django.utils.encoding import smart_str
 from django.http import HttpResponse
-import datetime
+from django.utils import timezone
 import json
 import csv
 
@@ -44,7 +44,7 @@ def save_event_attendee(event_object, data):
     attendee_email=data.pop('email','N/A'),
     attendee_phone=data.pop('phone','N/A'),
     attendee_details=str(data),
-    registration_date=datetime.datetime.now())
+    registration_date=timezone.now())
     ea.save()
 
 def merge_dicts(*args):
@@ -53,26 +53,21 @@ def merge_dicts(*args):
         res.update(dict)
     return res
 
-
-# TODO: PUT THE NAMES INTO DATABASE
-
 def get_gender_lists():
     male_file = open('ilmo-app/ilmo/resources/names-male.txt')
     males = [line.rstrip() for line in male_file]
     male_file.close()
     female_file = open('ilmo-app/ilmo/resources/names-female.txt')
-    females = [line.rstrip() for line in female_file]
+    females = [line.rstrip(). for line in female_file]
     female_file.close()
     return males,females
 
 def get_gender(name):
     males,females = get_gender_lists()
-    print(males)
-    first_name = name.split(" ")[0]
-    print(first_name)
-    if first_name in males:
+    first_name = name.split(" ")[0].lower()
+    if first_name in [i.lower() for i in males]:
         return "male"
-    elif first_name in females:
+    elif first_name in [i.lower() for i in females]:
         return "female"
     else:
         return "unknown"

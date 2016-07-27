@@ -1,3 +1,4 @@
+import sys
 from django.db import models
 from django.utils import timezone
 
@@ -33,10 +34,9 @@ class Event(models.Model):
 
     def is_full(self):
         count = EventAttendee.objects.filter(event__id=self.id).count()
-        print(self.capacity)
-        if self.capacity is not None:
-            if self.capacity < count:
-                return True
+        capacity = self.capacity if self.capacity is not None else sys.maxsize()
+        if capacity < count:
+            return True
         return False
 
 class EventAttendee(models.Model):

@@ -5,7 +5,11 @@
 
 {% block content %}
 <div class="container">
+  {% if coming %}
   <h1>Coming events</h1>
+  {% else %}
+  <h1>All events</h1>
+  {% endif %}
   <table>
     <tr>
       <th>Name</th>

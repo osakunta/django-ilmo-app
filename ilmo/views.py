@@ -16,7 +16,7 @@ def get_all_events(request):
 
 def get_coming_events(request):
     events = Event.objects.filter(event_date__gte=timezone.now())
-    return render(request,'list.html',{'event_list' : events})
+    return render(request,'list.html',{'event_list' : events, 'coming' : True})
 
 def index(request):
     return render(request,'index.html',{'content' : "This is Ilmo App"})
