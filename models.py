@@ -2,6 +2,7 @@ import sys
 import json
 from django.db import models
 from django.utils import timezone
+from djangocms_text_ckeditor.fields import HTMLField
 
 # DB MODELS
 class Place(models.Model):
@@ -36,8 +37,8 @@ class Event(models.Model):
     capacity = models.PositiveIntegerField(blank=True, null=True)
     payment = models.ForeignKey(Payment,blank=True)
     image_url = models.CharField(max_length=1000,blank=True)
-    description = models.TextField(max_length=5000)
-    thank_you_text = models.TextField(max_length=5000,blank=True)
+    description = HTMLField()
+    thank_you_text = HTMLField()
     backup = models.BooleanField(verbose_name="Accept backup seats?",default=True)
 
     def __str__(self):
