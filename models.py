@@ -1,4 +1,5 @@
 import sys
+import json
 from django.db import models
 from django.utils import timezone
 
@@ -12,6 +13,19 @@ class Place(models.Model):
     def __str__(self):
         return self.name
 
+class Payment(models.Model):
+    name = models.CharField(max_length=50)
+    price = models.PositiveIntegerField(blank=True,null=True)
+    method = models.CharField(choices=[(i,i) for i in ["Tilisiirto","Käteinen","Ilmainen","Muu"]],max_length=100)
+    receiver = models.CharField(max_length=50,blank=True)
+    reference_number = models.PositiveIntegerField(blank=True, null=True)
+    due_to = models.DateField(blank=True,null=True)
+    account = models.CharField(blank=True,null=True,max_length=100)
+    special_price_offsets = models.CharField(max_length=100,blank=True)
+
+    def __str__(self):
+        return self.name
+
 class Event(models.Model):
     name = models.CharField(max_length=50)
     form_name = models.CharField(max_length=50)
@@ -20,9 +34,10 @@ class Event(models.Model):
     close_date = models.DateTimeField()
     fb_url = models.URLField(blank=True)
     capacity = models.PositiveIntegerField(blank=True, null=True)
-    reference_number = models.PositiveIntegerField(blank=True, null=True)
+    payment = models.ForeignKey(Payment,blank=True)
     image_url = models.CharField(max_length=1000,blank=True)
     description = models.TextField(max_length=5000)
+    thank_you_text = models.TextField(max_length=5000,blank=True)
     backup = models.BooleanField(verbose_name="Accept backup seats?",default=True)
 
     def __str__(self):
@@ -53,8 +68,21 @@ class EventAttendee(models.Model):
     def __str__(self):
         return self.attendee_name
 
+    def get_price(self):
+        price = self.event.payment.price
+        ep = Payment.objects.get(event=self.event)
+        try:
+            special_prices_map = json.loads(ep.special_price_offsets)
+        except ValueError:
+            return price
+        else:
+            attendee_details_map = json.loads(self.attendee_details)
+            for name,offsets in special_prices_map.items():
+                price += offsets.get(attendee_details_map.get(name),0)
+            return price
+
     def __get_check_number(self):
-        base = self.event.reference_number + self.id
+        base = self.event.payment.reference_number + self.id
         sum = 0
         a = [7,3,1]
         i = 0
@@ -66,7 +94,7 @@ class EventAttendee(models.Model):
         return 0 if ret == 0 else int(10 - ret)
 
     def get_reference_number(self):
-        r = self.event.reference_number
+        r = self.event.payment.reference_number
         if r is None:
             return r
         return r * 10 + self.__get_check_number()

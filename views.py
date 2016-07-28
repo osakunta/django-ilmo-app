@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.utils import timezone
 
-from .models import Event,EventAttendee,Place
+from .models import Event,EventAttendee,Place,Payment
 from .forms import get_form
 from .utils import save_event_attendee,merge_dicts
 
@@ -31,7 +31,7 @@ def parse_event_form(request,event_id):
         form = get_form(form_name)(request.POST)
         if form.is_valid():
             attendee = save_event_attendee(event_details['event'],form.cleaned_data)
-            return render(request,'thanks.html',{'attendee' : attendee, 'event' : event_details['event']})
+            return render(request,'thanks.html',{'attendee' : attendee, 'event' : event_details['event'],'payment' : event_details['payment']})
     else:
         form = get_form(form_name)
     data = merge_dicts(event_details,{'form' : form})
@@ -41,5 +41,5 @@ def get_event_details(event_id):
     event = Event.objects.get(id=event_id)
     attendees = EventAttendee.objects.filter(event=event_id)
     place = Place.objects.get(id=event.place_id)
-    event
-    return {'event' : event, 'attendees' : attendees, 'place' : place}
+    payment = Payment.objects.get(id=event.payment_id)
+    return {'event' : event, 'attendees' : attendees, 'place' : place, 'payment' : payment}

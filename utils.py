@@ -8,9 +8,6 @@ import json
 import csv
 import os
 
-def format_to_json(data):
-    return data.replace("'","\"").replace("False","\"No\"").replace("True","\"Yes\"")
-
 def get_eventattendee_rows(queryset):
     rows = []
     for obj in queryset:
@@ -20,7 +17,7 @@ def get_eventattendee_rows(queryset):
         attendee['email'] = obj.attendee_email
         attendee['phone'] = obj.attendee_phone
         try:
-            details = json.loads(format_to_json(obj.attendee_details))
+            details = json.loads(obj.attendee_details)
         except ValueError:
             details = {}
         attendee.update(details)
@@ -49,7 +46,7 @@ def save_event_attendee(event_object, data):
     attendee_gender=gender,
     attendee_email=data.pop('email','N/A'),
     attendee_phone=data.pop('phone','N/A'),
-    attendee_details=str(data),
+    attendee_details=str(data).replace("'","\"").replace("False","\"No\"").replace("True","\"Yes\""),
     isbackup = isfull,
     registration_date=timezone.now())
     ea.save()
