@@ -59,7 +59,7 @@ def merge_dicts(*args):
     return res
 
 def get_resource(fname):
-    return RESOURCE_PATH + '/' + fname
+    return RESOURCE_PATH + fname
 
 def get_gender_lists():
     male_file = open(get_resource('names-male.txt'))
