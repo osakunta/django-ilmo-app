@@ -5,6 +5,7 @@
 
 {% block content %}
 <div class="container">
+<img src="{{event.image_url}}" alt="PHOTO" class="img-responsive">
 <h1>{{event.name}}</h1>
 <table class='table'>
   <tr>
@@ -25,18 +26,15 @@
     <td>Registration closes</td>
     <td>{{event.close_date}}</td>
   </tr>
+  <tr>
+    <td>Attendees</td>
+    <td>{{ attendees|length }} / {{event.capacity}}</td>
+  </tr>
 </table>
 {% if event.image_url %}
-<img src="{{event.image_url}}" alt="PHOTO">
 {% endif %}
-<p>{{event.description}}</p>
-<h4>Attendees ({{ attendees|length }})</h4>
-<div id="ilmoittautuneet" style="display: none;">
-{% for attendee in attendees %}
-<p>{{attendee.attendee_name}}</p>
-{% endfor %}
-</div>
-<div id='ilmoittautuneet_toggle' onclick="document.getElementById('ilmoittautuneet').style.display='';document.getElementById('ilmoittautuneet_toggle').style.display='none';"><a>näytä ilmoittautuneet</a></div>
+{{event.description}}
+<h3>Register</h3>
 {% if event.is_full and not event.backup %}
 <p>Event is full :(</p>
 {% elif event.is_past %}
@@ -45,13 +43,24 @@
 {% if event.backup and event.is_full %}
 <p>Event is full, you are registering on a backup place</p>
 {% endif %}
-<form action="" method="post">
+<form action="" role="form" method="post">
   {% csrf_token %}
   <table class='table'>
     {{ form.as_table }}
   </table>
-  <input type="Submit" value="submit" />
+<div class="form-group">
+  <input type="Submit" value="submit" class="form-control" />
+</div>
 </form>
+<h3>Attendees</h3>
+<div id="ilmoittautuneet" style="display: none;">
+{% for attendee in attendees %}
+<p>{{attendee.attendee_name}} {% if attendee.isbackup %} - backup {% endif %}</p>
+{% endfor %}
+</div>
+<div id='ilmoittautuneet_toggle' onclick="document.getElementById('ilmoittautuneet').style.display='';document.getElementById('ilmoittautuneet_toggle').style.display='none';" style="cursor: pointer;"><a>show attendees</a></div>
+
 </div>
 {% endif %}
+
 {% endblock content %}

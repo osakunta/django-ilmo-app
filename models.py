@@ -35,8 +35,8 @@ class Event(models.Model):
 
     def is_full(self):
         count = EventAttendee.objects.filter(event__id=self.id).count()
-        capacity = self.capacity if self.capacity is not None else sys.maxsize()
-        if capacity < count:
+        capacity = self.capacity if self.capacity is not None else sys.maxsize
+        if capacity <= count:
             return True
         return False
 
@@ -47,7 +47,8 @@ class EventAttendee(models.Model):
     attendee_phone = models.CharField(max_length=50,blank=True)
     attendee_gender = models.CharField(max_length=50,blank=True)
     attendee_details = models.CharField(max_length=500,blank=True)
-    registration_date = models.DateField()
+    isbackup = models.BooleanField(verbose_name="Is a backup?", default=False)
+    registration_date = models.DateTimeField()
 
     def __str__(self):
         return self.attendee_name

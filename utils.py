@@ -19,7 +19,10 @@ def get_eventattendee_rows(queryset):
         attendee['name'] = obj.attendee_name
         attendee['email'] = obj.attendee_email
         attendee['phone'] = obj.attendee_phone
-        details = json.loads(format_to_json(obj.attendee_details))
+        try:
+            details = json.loads(format_to_json(obj.attendee_details))
+        except ValueError:
+            details = {}
         attendee.update(details)
         rows.append(attendee)
     return rows
@@ -27,7 +30,7 @@ def get_eventattendee_rows(queryset):
 def export_eventattendees_csv(modeladmin,request,queryset):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=osallistujat.csv'
-    writer = csv.writer(response,csv.excel)
+    writer = csv.writer(response,csv.excel,delimiter=';')
     response.write(u'\ufeff'.encode('utf8'))
     rows = get_eventattendee_rows(queryset)
     model_order = ['event','name','email','phone']
@@ -39,6 +42,7 @@ def export_eventattendees_csv(modeladmin,request,queryset):
 export_eventattendees_csv.short_description = 'Export selected to CSV'
 
 def save_event_attendee(event_object, data):
+    isfull = event_object.is_full()
     gender = get_gender(data['name'])
     ea = EventAttendee(event=event_object,
     attendee_name=data.pop('name','N/A'),
@@ -46,6 +50,7 @@ def save_event_attendee(event_object, data):
     attendee_email=data.pop('email','N/A'),
     attendee_phone=data.pop('phone','N/A'),
     attendee_details=str(data),
+    isbackup = isfull,
     registration_date=timezone.now())
     ea.save()
     return ea
