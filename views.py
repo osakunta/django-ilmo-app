@@ -3,7 +3,9 @@ from django.template import Context
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.utils import timezone
-
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from .config import *
 from .models import Event,EventAttendee,Place,Payment
 from .forms import get_form
 from .utils import save_event_attendee,merge_dicts
@@ -31,6 +33,9 @@ def parse_event_form(request,event_id):
         form = get_form(form_name)(request.POST)
         if form.is_valid():
             attendee = save_event_attendee(event_details['event'],form.cleaned_data)
+            if EMAIL_CONFIGURED:
+                msg_html = render_to_string(EMAIL_TEMPLATE_PATH+"registration", {'attendee' : attendee, 'event' : event_details['event'],'payment' : event_details['payment']})
+                send_mail('Thank you for registration to ' + event_details['event'].name, msg_html,'sender@mail.com',[attendee.attendee_email],html_message=msg_html,)
             return render(request,'thanks.html',{'attendee' : attendee, 'event' : event_details['event'],'payment' : event_details['payment']})
     else:
         form = get_form(form_name)
