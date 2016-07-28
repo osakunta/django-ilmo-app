@@ -5,7 +5,9 @@
 
 {% block content %}
 <div class="container">
+{% if event.image_url %}
 <img src="{{event.image_url}}" alt="PHOTO" class="img-responsive">
+{% endif %}
 <h1>{{event.name}}</h1>
 <table class='table'>
   <tr>
