@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Event,EventAttendee,Place
+from .models import Event,EventAttendee,Place,Payment
 from django.http import HttpResponse
 import json
 import csv
@@ -38,6 +38,11 @@ class PlaceAdmin(admin.ModelAdmin):
     actions = [admin.actions.delete_selected]
     list_display = ('name',)
 
+class PaymentAdmin(admin.ModelAdmin):
+    actions = [admin.actions.delete_selected]
+    list_display = ('name', 'method')
+
 admin.site.register(Event,EventAdmin)
 admin.site.register(Place,PlaceAdmin)
 admin.site.register(EventAttendee,EventAttendeeAdmin)
+admin.site.register(Payment,PaymentAdmin)
