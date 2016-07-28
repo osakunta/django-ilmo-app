@@ -13,7 +13,7 @@ git clone https://github.com/mremes/django-ilmo-app.git
 
 3) Add this line to your your_site/urls.py (see more on Django's URL scheme [here](https://docs.djangoproject.com/ja/1.9/topics/http/urls/))
 ```
-url(r'^path_to_app/',include('ilmo-app.ilmo.urls',namespace='ilmo'))
+url(r'^path_to_app/',include('django-ilmo-app.ilmo.urls',namespace='ilmo'))
 ```
 
 4) Migrate the models to the database you are using with:
