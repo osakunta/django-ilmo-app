@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load cms_tags %}
+
+{% block title %}{% page_attribute "page_title" %}{% endblock title %}
+
+{% block content %}
+<div class="container">
+  <h2>Thank you {{attendee.first_name}} for registering to the event</h2>
+  {% if event.registration_message %}
+  <p>{{event.registration_message}}</p>
+  {% endif %}
+  {% if event.reference_number %}
+  <h3>Payment details: </h3>
+  <table class='table'>
+    <tr>
+      <th>Reference number</th>
+      <th>{{attendee.get_reference_number}}</th>
+    </tr>
+  </table>
+  {% endif %}
+
+</div>
+{% endblock content %}

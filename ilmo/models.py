@@ -14,12 +14,13 @@ class Place(models.Model):
 
 class Event(models.Model):
     name = models.CharField(max_length=50)
-    reference = models.CharField(max_length=50,verbose_name="Form to use")
+    form_name = models.CharField(max_length=50)
     event_date = models.DateTimeField()
     place = models.ForeignKey(Place)
     close_date = models.DateTimeField()
     fb_url = models.URLField(blank=True)
-    capacity = models.PositiveIntegerField()
+    capacity = models.PositiveIntegerField(blank=True, null=True)
+    reference_number = models.PositiveIntegerField(blank=True, null=True)
     image_url = models.CharField(max_length=1000,blank=True)
     description = models.TextField(max_length=5000)
     backup = models.BooleanField(verbose_name="Accept backup seats?",default=True)
@@ -50,3 +51,21 @@ class EventAttendee(models.Model):
 
     def __str__(self):
         return self.attendee_name
+
+    def __get_check_number(self):
+        base = self.event.reference_number + self.id
+        sum = 0
+        a = [7,3,1]
+        i = 0
+        while base > 0:
+            sum += (base % 10) * a[i]
+            base /= 10
+            i = (i + 1) % 3
+        ret = sum % 10
+        return 0 if ret == 0 else int(10 - ret)
+
+    def get_reference_number(self):
+        r = self.event.reference_number
+        if r is None:
+            return r
+        return r * 10 + self.__get_check_number()

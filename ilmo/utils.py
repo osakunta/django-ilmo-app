@@ -1,4 +1,5 @@
 from .models import Event,EventAttendee,Place
+from .config import *
 from django import forms
 from django.utils.encoding import smart_str
 from django.http import HttpResponse
@@ -47,6 +48,7 @@ def save_event_attendee(event_object, data):
     attendee_details=str(data),
     registration_date=timezone.now())
     ea.save()
+    return ea
 
 def merge_dicts(*args):
     res = {}
@@ -54,11 +56,14 @@ def merge_dicts(*args):
         res.update(dict)
     return res
 
+def get_resource(fname):
+    return RESOURCE_PATH + '/' + fname
+
 def get_gender_lists():
-    male_file = open(os.path.dirname(__file__) + '/resources/names-male.txt')
+    male_file = open(get_resource('names-male.txt'))
     males = [line.rstrip() for line in male_file]
     male_file.close()
-    female_file = open(os.path.dirname(__file__) + '/resources/names-female.txt')
+    female_file = open(get_resource('names-female.txt'))
     females = [line.rstrip() for line in female_file]
     female_file.close()
     return males,females
