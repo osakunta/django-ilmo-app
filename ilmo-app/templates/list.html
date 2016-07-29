@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load cms_tags %}
+
+{% block title %}{% page_attribute "page_title" %}{% endblock title %}
+
+{% block content %}
+<div class="container">
+  {% if coming %}
+  <h1>Coming events</h1>
+  {% else %}
+  <h1>All events</h1>
+  {% endif %}
+  <table class='table'>
+    <tr>
+      <th>Name</th>
+      <th>Date</th>
+      <th>Registration closes</th>
+    </tr>
+    {% for event in event_list %}
+    <tr>
+      <th><a href ="../../event/{{event.id}}"> {{ event.name }}</a></th>
+      <th>{{ event.event_date }}</th>
+      <th>{{ event.close_date }}</th>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock content %}
