@@ -1,5 +1,5 @@
 # Ilmo App
-Project is a lightweight event registration & reporting application for Django Framework.
+Project is a lightweight event registration & reporting application for Django Framework. 
 
 As it stands, the implemented MVC pattern is currently made on an ad hoc basis but it's possible to reuse it as such or with user's own domain-specific modifications.
 
