@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock title %}
+
+{% block content %}
+<div class="container">
+  <h2>Thank you {{attendee.first_name}} for registering to the event</h2>
+  {% if payment %}
+  <h3>Payment details</h3>
+  <table class='table'>
+    {% if attendee.get_price %}
+    <tr>
+      <th>Price</th>
+      <th>{{attendee.get_price}}€</th>
+    </tr>
+    {% endif %}
+    {% if payment.method %}
+    <tr>
+      <th>Method</th>
+      <th>{{payment.method}}</th>
+    </tr>
+    {% endif %}
+    {% if payment.receiver %}
+    <tr>
+      <th>Receiver</th>
+      <th>{{payment.receiver}}</th>
+    </tr>
+    {% endif %}
+    {% if payment.account %}
+    <tr>
+      <th>Account</th>
+      <th>{{payment.account}}</th>
+    </tr>
+    {% endif %}
+    {% if payment.due_to %}
+    <tr>
+      <th>Due-to date</th>
+      <th>{{payment.due_to}}</th>
+    </tr>
+    {% endif %}
+    {% if attendee.get_price %}
+    <tr>
+      <th>Reference number</th>
+      <th>{{attendee.get_reference_number}}</th>
+    </tr>
+    {% endif %}
+  </table>
+  <p>{{event.thank_you_text}}</p>
+  {% endif %}
+
+</div>
+{% endblock content %}
