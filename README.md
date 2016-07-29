@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mremes/django-ilmo-app.svg?branch=master)](https://travis-ci.org/mremes/django-ilmo-app)
+
 # Ilmo App
 Project is a lightweight event registration & reporting application for Django Framework. 
 
