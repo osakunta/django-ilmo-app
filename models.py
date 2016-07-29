@@ -4,6 +4,9 @@ from django.db import models
 from django.utils import timezone
 from djangocms_text_ckeditor.fields import HTMLField
 
+class EventCannotAttendException(Exception):
+    pass
+
 # DB MODELS
 class Place(models.Model):
     name = models.CharField(max_length=50)
@@ -35,7 +38,7 @@ class Event(models.Model):
     close_date = models.DateTimeField()
     fb_url = models.URLField(blank=True)
     capacity = models.PositiveIntegerField(blank=True, null=True)
-    payment = models.ForeignKey(Payment,blank=True)
+    payment = models.ForeignKey(Payment,null=True)
     image_url = models.CharField(max_length=1000,blank=True)
     description = HTMLField()
     thank_you_text = HTMLField()
@@ -68,6 +71,13 @@ class EventAttendee(models.Model):
 
     def __str__(self):
         return self.attendee_name
+
+    def save(self,*args,**kwargs):
+        if (self.event.is_full() and not self.event.backup):
+            raise EventCannotAttendException("Event is full and no backups taken")
+        elif self.event.close_date < timezone.now():
+            raise EventCannotAttendException("Event registration time has past")
+        super(EventAttendee,self).save(*args,**kwargs)
 
     def get_price(self):
         price = self.event.payment.price
