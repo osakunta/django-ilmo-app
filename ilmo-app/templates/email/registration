@@ -1,0 +1,8 @@
+Thank you for registering for event {{event.name}}
+{{event.thank_you_text}}
+{% if payment %}
+Price: {{attendee.get_price}}
+Method: {{payment.method}}
+Receiver: {{payment.receiver}}
+Account: {{payment.account}}
+{% endif %}
