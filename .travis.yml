@@ -4,6 +4,11 @@ python:
 env:
   - DJANGO=1.8.13
 install:
-  - pip install -q Django==$DJANGO --use-mirrors
+  - pip install -q Django==$DJANGO
+  - pip install coveralls
 script:
   - python manage.py test ilmo_app
+script:
+  - coverage run --source=your_app manage.py test ilmo_app
+after_success:
+  - coveralls
