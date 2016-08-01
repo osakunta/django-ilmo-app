@@ -1,45 +1,59 @@
 [![Build Status](https://travis-ci.org/mremes/django-ilmo-app.svg?branch=master)](https://travis-ci.org/mremes/django-ilmo-app) [![Coverage Status](https://coveralls.io/repos/github/mremes/django-ilmo-app/badge.svg?branch=master)](https://coveralls.io/github/mremes/django-ilmo-app?branch=master)
 # Ilmo App
-Project is a lightweight event registration & reporting application for Django Framework. 
+Project is a lightweight event registration & reporting application for Django Framework.
 
 As it stands, the implemented MVC pattern is currently made on an ad hoc basis but it's possible to reuse it as such or with user's own domain-specific modifications.
 
 ## Usage
-1) Clone the repository into root of your current project:
+To test out functionalities (currently tested with Python 3.5 and Django 1.8.13):
+1) Create a virtual environment with Python 3.5
 ```
-git clone https://github.com/mremes/django-ilmo-app.git
+virtualenv -p /usr/bin/python3.5 envname
 ```
-
-2) Add 'django-ilmo-app' to INSTALLED_APPS list in your_site/settings.py
-
-3) Add this line to your your_site/urls.py (see more on Django's URL scheme [here](https://docs.djangoproject.com/ja/1.9/topics/http/urls/))
+2) Activate virtual environment
 ```
-url(r'^path_to_app/',include('django-ilmo-app.urls',namespace='ilmo'))
+source envname/bin/activate
 ```
-
-4) Migrate the models to the database you are using with:
+3) Install django (at least) package via pip
 ```
-python manage.py makemigrations ilmo
-python manage.py migrate
+pip install "django=1.8.13"
 ```
-
-5) Run your server and go to the app root and you should get a HTTP response:
+4) Edit ```TIME_ZONE``` variable in ```mysite/settings.py``` to match your time zone
+5) Run the server
 ```
-This is Ilmo App
+python manage.py runserver
 ```
-
+6) Open Ilmo welcome page in browser:
+```
+http://localhost:8000/ilmo
+```
 ## Models
-- Place
-- Event
-- EventAttendee
 
-Objects of these models can be saved either using CLI (django shell or manual database inserts) or admin interface
+### Place
+Represents a place with **name**, address, zip code and city properties as attributes
+### Payment
+Represents a payment option (foreign key to an Event object) with **name**, price, **method**, receiver, reference number, due to date, special price offsets and account number as attributes. Price field is currently an integer field. There is no validation for reference number, due to date, special price offsets (correct json format) or account number attributes.
 
-## Views
-With the current views you can list all events, show event details and register for event
+'Special price offsets' is a special attribute using which price can be affected depending on form fields and inputs. It requires special data format to get it working:
 
-## Templates
-There are sample templates in /templates folder that can be used for testing out
+```
+{'form_field1' : {'form_input1' : price_offset_integer1, 'form_input2' : price_offset_integer2, ...}, 'form_field2' : {...}, ...}
+```
+
+### Event
+Represents an event. Attributes: **name**, **form filename**, **event date**, **Place object**, **registration closing date**, URL to Facebook event page, capacity, Payment object, url to an image, event description, thank you text and backup boolean as attributes.
+
+
+### EventAttendee
+TODO
+
+Objects of these models can be saved either using CLI (Django shell or manual database inserts) or admin interface
+
+## Views and templates
+With the current templates
+- list all events
+- show event registration page containing event details and registration form
+- thank you page containing payment details of the event and event's thank you message after registration
 
 ## Forms
 Forms for populating EventAttendee table are done with .json templates in /form_templates. The json keys which are defined in the EventAttendee model are saved into model and additional fields are saved under attendee_details key as a string representation of a Python dictionary. Thus only keys defined explicitly in the model can be used for querying data.
