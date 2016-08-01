@@ -19,6 +19,7 @@ source envname/bin/activate
 pip install "django=1.8.13"
 ```
 4) Edit ```TIME_ZONE``` variable in ```mysite/settings.py``` to match your time zone
+
 5) Run the server
 ```
 python manage.py runserver
