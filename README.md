@@ -6,6 +6,7 @@ As it stands, the implemented MVC pattern is currently made on an ad hoc basis b
 
 ## Usage
 To test out functionalities (currently tested with Python 3.5 and Django 1.8.13):
+
 1) Create a virtual environment with Python 3.5
 ```
 virtualenv -p /usr/bin/python3.5 envname
