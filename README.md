@@ -21,6 +21,11 @@ pip install "django=1.8.13"
 ```
 4) Edit ```TIME_ZONE``` variable in ```mysite/settings.py``` to match your time zone
 
+5) Make migrations to project's database
+```
+python manage.py makemigrations ilmo_app
+python manage.py migrate
+```
 5) Run the server
 ```
 python manage.py runserver
