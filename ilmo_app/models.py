@@ -2,6 +2,7 @@ import sys
 import json
 from django.db import models
 from django.utils import timezone
+from djangocms_text_ckeditor.fields import HTMLField
 
 class EventCannotAttendException(Exception):
     pass
@@ -37,10 +38,10 @@ class Event(models.Model):
     close_date = models.DateTimeField()
     fb_url = models.URLField(blank=True)
     capacity = models.PositiveIntegerField(blank=True, null=True)
-    payment = models.ForeignKey(Payment,null=True)
+    payment = models.ForeignKey(Payment,null=True,blank=True)
     image_url = models.CharField(max_length=1000,blank=True)
-    description = models.CharField(max_length=1000,blank=True)
-    thank_you_text = models.CharField(max_length=1000,blank=True)
+    description = HTMLField()
+    thank_you_text = HTMLField()
     backup = models.BooleanField(verbose_name="Accept backup seats?",default=True)
 
     def __str__(self):

@@ -5,8 +5,8 @@ from django.http import HttpResponse
 import json
 import csv
 from .utils import export_eventattendees_csv
-
 admin.site.disable_action('delete_selected')
+
 
 class EventAdmin(admin.ModelAdmin):
     actions = [admin.actions.delete_selected]
