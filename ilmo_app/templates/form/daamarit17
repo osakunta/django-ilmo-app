@@ -1,0 +1,8 @@
+[
+	{ "type": "text", "name": "name", "label": "Nimi","required":1 },
+        { "type": "email", "name": "email", "label": "Sähköposti","required":1},
+        { "type": "select", "name": "alcohol", "label": "Alkoholillinen/Alkoholiton", "options": ["Alkoholillinen", "Alkoholiton"]},
+        { "type": "text", "name": "allergies", "label": "Allergiat ja erityisruokavaliot" },
+        { "type": "text", "name": "lempisynti", "label": "Lempisyntisi"}
+]
+

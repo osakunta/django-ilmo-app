@@ -1,0 +1,10 @@
+[                             
+                { "type": "text",  "name": "name", "label": "Nimi","required":1 },
+                { "type": "email", "name": "email", "label": "Sähköposti","required":1},
+                { "type": "select", "name": "onetwo","label": "Fuksi","options": ["On", "Ei"]},
+                { "type": "select", "name": "alcohol", "label": "Alkoholillinen", "options": ["Alkoholillinen", "Alkoholiton"]},
+                { "type": "text", "name": "ruokavalio", "label": "Erityis ruokavalio" },
+                { "type": "text", "name": "muuta", "label": "Muuta"}
+]
+
+

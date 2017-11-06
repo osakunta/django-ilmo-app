@@ -1,0 +1,14 @@
+[               
+                { "type": "text", "name": "name", "label": "Nimi", "required":1 },
+                { "type": "email", "name": "email", "label": "Sähköposti", "required":1},
+                { "type": "select", "name": "Olen", "label": "Olen", "options": ["SatOn fuksi", "SatOn civis", "seniori, edustaja tai muu", "Kannatusillalliskortti"]},
+                { "type": "select", "name": "alcohol", "label": "Valitse", "options": ["alkoholillinen", "alkoholiton"]},
+                { "type": "text", "name": "Erityisruokavaliot", "label": "Erityisruokavaliot ja allergiat"},
+                { "type": "text", "name": "Avec", "label": "Avec"},
+                { "type": "text", "name": "Pöytäseuratoive", "label": "Pöytäseuratoive"},
+                { "type": "select", "name": "Tervehdys", "label": "Tuon tervehdyksen väistyvälle tai uudelle inspehtorille", "options": ["en","kyllä"]},
+                { "type": "text", "name": "Järjestö", "label": "Järjestö"},
+                { "type": "select", "name": "Sillis", "label": "Silliaamiainen", "options": ["osallistun", "en osallistu"]},
+                { "type": "text", "name": "Juhlamestarille", "label": "Muita terveisiä juhlamestarille"}
+]
+
