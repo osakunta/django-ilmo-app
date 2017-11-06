@@ -1,4 +1,4 @@
-from .models import Event, EventAttendee, Place
+from .models import EventAttendee
 from .config import *
 from django import forms
 from django.utils.encoding import smart_str
