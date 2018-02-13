@@ -136,5 +136,9 @@ class FieldGenerator:
         return forms.ChoiceField(**options)
 
     @staticmethod
+    def create_field_for_radioselect(field, options):
+        return FieldGenerator.create_field_for_select(field, {**options, 'widget': forms.RadioSelect()})
+
+    @staticmethod
     def create_field_for_checkbox(field, options):
         return forms.BooleanField(widget=forms.CheckboxInput, **options)
