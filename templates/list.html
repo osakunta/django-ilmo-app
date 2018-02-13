@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}{% endblock title %}
+
+{% block content %}
+<div class="container">
+  <h1>Osakunnan tapahtumat</h1>
+  <br> 
+  <p>Täältä löydät osakunnan tulevat tapahtumat</p>  
+  <br>
+  <h2>{% if coming %}Tulevat tapahtumat{% else %}Kaikki tapahtumat{% endif %}</h2>
+  <table class='table'>
+    <tr>
+      <th>Tapahtuma</th>
+      <th>Ajankohta</th>
+      <th>Ilmoittautuminen päättyy</th>
+    </tr>
+   {% if coming %}
+    {% for event in coming_events %}
+    <tr>
+      <th><a href ="{{event.form_name}}"> {{ event.name }}</a></th>
+      <th>{{ event.event_date }}</th>
+      <th>{{ event.close_date }}</th>
+    </tr>
+    {% endfor %}
+   {% else %}
+    {% for event in event_list %}
+    <tr>
+      <th><a href ="{{event.form_name}}"> {{ event.name }}</a></th>
+      <th>{{ event.event_date }}</th>
+      <th>{{ event.close_date }}</th>
+    </tr>
+    {% endfor %}
+   {% endif %}
+  </table>
+  {% if coming and head_past_events %}
+  <h2>Menneitä tapahtumia</h2>
+  <table class='table'>
+    <tr>
+      <th>Tapahtuma</th>
+      <th>Ajankohta</th>
+      <th>Ilmoittautuminen päättyy</th>
+    </tr>
+    {% for event in head_past_events %}
+    <tr>
+      <th><a href ="{{event.form_name}}"> {{ event.name }}</a></th>
+      <th>{{ event.event_date }}</th>
+      <th>{{ event.close_date }}</th>
+    </tr>
+    {% endfor %}
+ </table>
+ {% endif %} 
+</div>
+{% endblock content %}
