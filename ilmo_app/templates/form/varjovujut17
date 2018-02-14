@@ -1,0 +1,8 @@
+[
+                { "type": "text", "name": "name", "label": "Nimi","required":1 },
+                { "type": "select", "name": "alcohol", "label": "Alkoholillinen/Alkoholiton", "options": ["Alkoholillinen", "Alkoholiton"]},
+                { "type": "select", "name": "food", "label": "Liha/Kasvis", "options": ["Liha", "Kasvis"] },
+                { "type": "text", "name": "allergies", "label": "Allergiat" },
+                { "type": "text", "name": "terveiset", "label": "Terveiset"}
+]
+
