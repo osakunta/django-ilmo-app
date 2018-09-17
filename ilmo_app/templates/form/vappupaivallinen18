@@ -1,0 +1,6 @@
+[                
+                { "type": "text", "name": "name", "label": "Nimi", "required":1},
+                { "type": "email", "name": "email", "label": "Sähköposti", "required":1},
+                { "type": "textarea", "name": "ruokavalio", "label": "Allergiat ja erityisruokavaliot"},
+                { "type": "select", "name": "olen", "label": "Olen", "options": ["aikuinen", "lapsi 5-12", "lapsi 0-4"], "required":1}
+]

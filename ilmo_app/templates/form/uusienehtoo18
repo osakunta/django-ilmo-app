@@ -1,0 +1,9 @@
+[
+        {"type": "text","name": "name","label": "Nimi/Name","required" : 1},
+        {"type": "email","name": "email","label": "Sähköposti/Email","required" : 1},
+        {"type": "select", "name": "alkoholi", "label": "Juomat/Drinks","options":["Alkoholillinen/Alcoholic","Alkoholiton/Non-alcoholic"]},
+        {"type": "text", "name": "ruokavalio", "label": "Erikoisruokavalio/Special diet"},
+	{"type": "select", "name": "fuksi/civis", "label": "Olen/I am", "options": ["Fuksi/Freshman", "Civis"]},
+        {"type": "text", "name": "muuta","label": "Muuta/Additional information"}
+]
+

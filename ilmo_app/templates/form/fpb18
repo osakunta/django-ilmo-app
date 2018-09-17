@@ -1,0 +1,13 @@
+[
+        {"type": "text","name": "name","label": "Nimi","required" : 1},
+        {"type": "email","name": "email","label": "Sähköposti","required" : 1},
+	{"type": "text", "name": "phone","label": "Puhelinnumero","required" : 1},
+        {"type": "text", "name": "nation","label": "Osakunta"},
+        {"type": "select", "name": "BUFFET", "label": "Buffetilla?","options":["Buffetilla","Ilman"]},
+        {"type": "select", "name": "sukupuoli","label": "Sukupuoli", "options": ["nainen", "mies"]},
+	{"type": "text", "name": "syntaik", "label": "Syntymäaika"},
+	{"type": "text", "name": "kansalaisuus", "label": "Kansalaisuus"},
+        {"type": "text", "name": "hyttiseura", "label": "Hyttiseura"},
+        {"type": "text", "name": "terveiset","label": "Terveiset amiraalille"},
+	{"type": "text", "name": "muuta","label": "Muuta"}
+]		

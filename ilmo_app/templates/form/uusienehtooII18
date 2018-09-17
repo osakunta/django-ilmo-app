@@ -1,0 +1,10 @@
+[
+        {"type": "text", "name": "name","label": "Nimi","required" : 1},
+        {"type": "email", "name": "email","label": "Sähköposti","required" : 1},
+        {"type": "textarea", "name": "allergiat","label": "Erikoisruokavaliot"},
+	{"type": "radioselect", "name": "alkoholi", "label": "Alkoholillinen tai Alkoholiton", "options":["Alkoholillinen", "Alkoholiton"], "required" : 1},
+ 	{"type": "radioselect", "name": "sillis", "label": "Sillis", "options":["Kyllä","Ei"], "required" : 1},
+	{"type": "textarea", "name": "pöytäseurue", "label": "Pöytäseurue"},
+	{"type": "textarea", "name": "muuta", "label": "Terveisiä järjestäjille :D", "required" : 1}
+]
+

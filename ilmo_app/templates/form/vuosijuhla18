@@ -1,0 +1,13 @@
+[
+        {"type": "text", "name": "name", "label": "Nimi", "required" : 1},
+        {"type": "email","name": "email", "label": "Sähköposti", "required" : 1},
+        {"type": "radioselect", "name": "status", "label": "Illalliskortti", "options": ["SatOn fuksi/civis", "edustaja, seniori tai muu", "kannatusillalliskortti"],"required" : 1},
+        {"type": "text", "name": "org", "label": "Edustamani osakunta tai järjestö"},
+        {"type": "radioselect", "name": "greeting", "label": "Haluan esittää tervehdyksen", "options": ["en", "kyllä"], "required": 1},
+        {"type": "textarea", "name": "food", "label": "Erityisruokavaliot ja allergiat"},
+	{"type": "radioselect", "name": "alkoholi", "label": "Alkoholillinen tai alkoholiton", "options": ["alkoholillinen", "alkoholiton"], "required": 1},
+	{"type": "text", "name": "avec", "label": "Avec (ilmoittautuu erikseen)"},
+	{"type": "textarea", "name": "seuratoive", "label": "Pöytäseuratoive"},
+        {"type": "radioselect", "name": "sillis", "label": "Osallistun silliaamiaiselle", "options":["kyllä", "en"],"required" : 1},
+        {"type": "textarea", "name": "muut", "label": "Muuta"}
+]
