@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.utils import timezone
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from django.http import Http404
+from django.shortcuts import get_object_or_404
 from .config import *
 from .models import Event, EventAttendee, Place, Payment
 from .forms import get_form
@@ -45,12 +47,14 @@ def parse_event_form(request, form_name):
                           {'attendee': attendee, 'event': event_details['event'], 'payment': event_details['payment']})
     else:
         form = get_form(form_name)
+    if not form:
+        raise Http404("Lomaketta ei löydy")
     data = merge_dicts(event_details, {'form': form})
     return render(request, 'registration_form.html', data)
 
 
 def get_event_details(form):
-    event = Event.objects.get(form_name=form)
+    event = get_object_or_404(Event, form_name=form)
     attendees = EventAttendee.objects.filter(event=event.id)
     place = Place.objects.get(id=event.place_id)
     payment = Payment.objects.get(id=event.payment_id)

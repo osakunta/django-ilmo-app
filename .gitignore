@@ -3,6 +3,7 @@ db.sqlite3
 __pycache__/
 *.py[cod]
 *$py.class
+*.class
 
 # C extensions
 *.so
@@ -88,4 +89,4 @@ ENV/
 
 # Rope project settings
 .ropeproject
-ilmo_app/templates/form/*
+migrations/
