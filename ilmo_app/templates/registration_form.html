@@ -52,7 +52,8 @@
     {{ form.as_table }}
   </table> 
 <div class="form-group">
-<input type="Submit" value="ilmoittaudu" class="btn btn-primary btn-block" />
+<input type="checkbox" onchange="document.getElementById('ilmoittaudu').disabled = !this.checked;" />  Hyväksyn, että tietojani käytetään tapahtuman järjestämiseen.<br><br>
+<input type="Submit" value="ilmoittaudu" id="ilmoittaudu" class="btn btn-primary btn-block" disabled=True/>
 </div>
 </form>
 {% endif %}

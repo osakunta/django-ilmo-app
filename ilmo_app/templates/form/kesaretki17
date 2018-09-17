@@ -1,7 +1,0 @@
-[
-                { "type": "text", "name": "name", "label": "Nimi (koko nimi)","required":1 },
-                { "type": "text", "name": "email", "label": "Sähköpostiosoite","required":1  },
-                { "type": "text", "name": "ruokavalio", "label": "Erityisruokavaluo/allergiat"},
-                { "type": "text", "name": "muuta", "label": "Muuta" }
-]
-

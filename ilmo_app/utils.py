@@ -76,10 +76,10 @@ def get_resource(fname):
 
 
 def get_gender_lists():
-    male_file = open(get_resource('names-male.txt'))
+    male_file = open(get_resource('names/male.txt'))
     males = [line.rstrip() for line in male_file]
     male_file.close()
-    female_file = open(get_resource('names-female.txt'))
+    female_file = open(get_resource('names/female.txt'))
     females = [line.rstrip() for line in female_file]
     female_file.close()
     return males, females
@@ -137,8 +137,21 @@ class FieldGenerator:
 
     @staticmethod
     def create_field_for_radioselect(field, options):
-        return FieldGenerator.create_field_for_select(field, {**options, 'widget': forms.RadioSelect()})
+        options['choices'] = [(i, i) for i in field['options']]
+        return forms.ChoiceField(widget=forms.RadioSelect(), **options)
+        #return FieldGenerator.create_field_for_select(field, {**options, 'widget': forms.RadioSelect()})
 
     @staticmethod
     def create_field_for_checkbox(field, options):
         return forms.BooleanField(widget=forms.CheckboxInput, **options)
+
+def validate_json(f):
+  import json
+  payload = json.load(f)
+  for i in payload:
+    if 'type' not in i.keys():
+      raise KeyError
+    elif 'name' not in i.keys():
+      raise KeyError
+  # WIP
+  return True
