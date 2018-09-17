@@ -6,7 +6,10 @@ import codecs
 
 
 def get_form(form_name):
-    with codecs.open(config.FORM_TEMPLATE_PATH + form_name) as template:
-        fields = json.load(template)
-        fg = FieldGenerator(fields)
-        return type('form', (forms.Form,), fg.formfields)
+    try:
+        with codecs.open(config.FORM_TEMPLATE_PATH + form_name) as template:
+            fields = json.load(template)
+            fg = FieldGenerator(fields)
+            return type('form', (forms.Form,), fg.formfields)
+    except Exception as e:
+        return None

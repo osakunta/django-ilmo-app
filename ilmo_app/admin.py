@@ -30,7 +30,6 @@ class EventAttendeeAdmin(admin.ModelAdmin):
                     ea.save()
     delete_model.short_description = "Delete selected Event Attendee"
 
-
 class PlaceAdmin(admin.ModelAdmin):
     actions = [admin.actions.delete_selected]
     list_display = ('name',)
