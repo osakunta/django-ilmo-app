@@ -1,5 +1,5 @@
 [
-{"type": "text","name": "nimi", "label": "Name", "required": 1},
+{"type": "text","name": "name", "label": "Name", "required": 1},
 {"type": "email","name": "email", "label": "Email", "required": 1},
 {"type": "select", "name": "drinks", "label": "Drinks","options":["Alcoholic","Non-alcoholic"]},
 {"type": "text", "name": "menu", "label": "Allergies and special diets"},
