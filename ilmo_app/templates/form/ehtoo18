@@ -1,0 +1,64 @@
+[
+  {
+    "type": "text",
+    "name": "name",
+    "label": "Nimi",
+    "required": 1
+  },
+  {
+    "type": "email",
+    "name": "email",
+    "label": "Sähköposti",
+    "required": 1
+  },
+  {
+    "type": "radioselect",
+    "name": "status",
+    "label": "Olen",
+    "options": ["Fuksi (38€)", "Civis (42€)", "Seniori tai edustaja (50€)"],
+    "required": 1
+  },
+  {
+    "type": "text",
+    "name": "org",
+    "label": "Osakunta tai edustamani taho"
+  },
+  {
+    "type": "radioselect",
+    "name": "eat",
+    "label": "Syön",
+    "options": ["Liha", "Kasvis"],
+    "required": 1
+  },
+  {
+    "type": "radioselect",
+    "name": "alkoholi",
+    "label": "Tänä iltana",
+    "options": ["Juon alkoholia", "En juo alkoholia"],
+    "required": 1
+  },
+  {
+    "type": "textarea",
+    "name": "food",
+    "label": "Erityisruokavaliot ja allergiat"
+  },
+  {
+    "type": "radioselect",
+    "name": "sillis",
+    "label": "Osallistun silliaamiaiselle",
+    "options": ["Kyllä (8€)", "En"],
+    "required": 1
+  },
+  {
+    "type": "select",
+    "name": "sitova",
+    "label": "Ymmärrän ilmoittautumisen olevan sitova:",
+    "options": ["Kyllä"],
+    "required": 1
+  },
+  {
+    "type": "textarea",
+    "name": "terveiset",
+    "label": "Terveiset"
+  }
+]
