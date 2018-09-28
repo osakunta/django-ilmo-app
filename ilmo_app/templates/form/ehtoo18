@@ -50,10 +50,9 @@
     "required": 1
   },
   {
-    "type": "select",
+    "type": "checkbox",
     "name": "sitova",
     "label": "Ymmärrän ilmoittautumisen olevan sitova:",
-    "options": ["Kyllä"],
     "required": 1
   },
   {
