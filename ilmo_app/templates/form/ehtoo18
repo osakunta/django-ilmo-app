@@ -50,6 +50,16 @@
     "required": 1
   },
   {
+    "type": "text",
+    "name": "avec",
+    "label": "Avec (ilmoittauduttava erikseen)"
+  },
+  {
+    "type": "text",
+    "name": "poytaseurue",
+    "label": "Pöytäseuruetoive"
+  },
+  {
     "type": "checkbox",
     "name": "sitova",
     "label": "Ymmärrän ilmoittautumisen olevan sitova:",
