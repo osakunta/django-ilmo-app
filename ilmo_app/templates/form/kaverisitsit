@@ -1,0 +1,8 @@
+[
+{"type": "text","name": "name", "label": "Nimi/Name", "required" : 1},
+{"type": "email","name": "email","label": "Sähköposti/Email", "required" : 1},
+{"type": "radioselect", "name": "juon", "label": "Juomat/Drinks", "options": ["Alkoholillinen/Alcoholic","Alkoholiton/Non-alcoholic"], "required" : 1},
+{"type": "textarea", "name": "ruokavalio", "label": "Erikoisruokavaliot ja allergiat/Special diets and allergias"},
+{"type": "textarea", "name": "kaveri", "label": "Kaveri (ilmottautuu erikseen)/Mate (registers separately)"},
+{"type": "textarea", "name": "muuta", "label": "Muuta/Additional information"}
+]
