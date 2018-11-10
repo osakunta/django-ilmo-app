@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from .config import *
-from .models import Event, EventAttendee, Place, Payment
+from .models import EventForm, Event, EventAttendee, Place, Payment
 from .forms import get_form
 from .utils import save_event_attendee, merge_dicts
 
@@ -31,10 +31,10 @@ def thanks(request):
     return render(request, 'index.html', {'content': "Thank you for registration"})
 
 
-def parse_event_form(request, form_name):
-    event_details = get_event_details(form_name)
+def parse_event_form(request, form_alias):
+    event_details = get_event_details_by_form_alias(form_alias)
     if request.method == 'POST':
-        form = get_form(form_name)(request.POST)
+        form = get_form(form_alias)(request.POST)
         if form.is_valid():
             attendee = save_event_attendee(event_details['event'], form.cleaned_data)
             if EMAIL_CONFIGURED:
@@ -46,15 +46,18 @@ def parse_event_form(request, form_name):
             return render(request, 'thanks.html',
                           {'attendee': attendee, 'event': event_details['event'], 'payment': event_details['payment']})
     else:
-        form = get_form(form_name)
-    if not form:
-        raise Http404("Lomaketta ei löydy")
+        form = get_form(form_alias)
+
+        if not form:
+            raise Http404("Lomaketta ei löydy")
+
     data = merge_dicts(event_details, {'form': form})
     return render(request, 'registration_form.html', data)
 
 
-def get_event_details(form):
-    event = get_object_or_404(Event, form_name=form)
+def get_event_details_by_form_alias(form):
+    form = get_object_or_404(EventForm, url_alias=form)
+    event = get_object_or_404(Event, form=form)
     attendees = EventAttendee.objects.filter(event=event.id)
     place = Place.objects.get(id=event.place_id)
     payment = Payment.objects.get(id=event.payment_id)
