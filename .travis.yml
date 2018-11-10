@@ -2,7 +2,7 @@ language: python
 python:
   - "3.5"
 env:
-  - DJANGO=1.8.13
+  - DJANGO=1.11.16
 install:
   - pip install -q Django==$DJANGO
   - pip install coveralls

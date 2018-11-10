@@ -47,7 +47,7 @@ class EventForm(models.Model):
 
 class Event(models.Model):
     name = models.CharField(max_length=50)
-    form = models.ForeignKey(EventForm)
+    form = models.ForeignKey(EventForm, null=True)
     event_date = models.DateTimeField()
     place = models.ForeignKey(Place)
     close_date = models.DateTimeField()
