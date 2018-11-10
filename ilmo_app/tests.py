@@ -1,17 +1,17 @@
 from django.test import TestCase
-from models import Event, EventAttendee, Place, EventCannotAttendException
+from .models import Event, EventAttendee, Place, EventCannotAttendException
 from datetime import date, timedelta
 from django.utils import timezone
 
 PLACE_MOCK = {'name': 'Place'}
 EVENT_MOCKS = [
-    {'name': 'Event', 'form_name': 'test_form', 'event_date': date(2015, 1, 1), 'capacity': 1,
+    {'name': 'Event', 'event_date': date(2015, 1, 1), 'capacity': 1,
      'close_date': timezone.now() - timedelta(days=1), 'description': 'empty'},
-    {'name': 'Event1', 'form_name': 'test_form', 'event_date': date(2015, 1, 1), 'capacity': 0,
+    {'name': 'Event1', 'event_date': date(2015, 1, 1), 'capacity': 0,
      'close_date': timezone.now() + timedelta(days=1), 'description': 'empty', 'backup': False},
-    {'name': 'Event2', 'form_name': 'test_form', 'event_date': date(2015, 1, 1), 'capacity': 1,
+    {'name': 'Event2', 'event_date': date(2015, 1, 1), 'capacity': 1,
      'close_date': timezone.now() + timedelta(days=1), 'description': 'empty'},
-    {'name': 'Event3', 'form_name': 'test_form', 'event_date': date(2015, 1, 1), 'capacity': 1,
+    {'name': 'Event3', 'event_date': date(2015, 1, 1), 'capacity': 1,
      'close_date': timezone.now() + timedelta(days=1), 'description': 'empty'}
 ]
 
@@ -19,7 +19,7 @@ EVENT_MOCKS = [
 def create_events():
     place = Place.objects.create(**PLACE_MOCK)
     for event in EVENT_MOCKS:
-        Event.objects.create(event, place=place)
+        Event.objects.create(**event, place=place)
 
 
 def attend_event(event, times=1):
