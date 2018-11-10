@@ -36,9 +36,18 @@ class Payment(models.Model):
         return self.name
 
 
+class EventForm(models.Model):
+    name = models.CharField(max_length=50)
+    url_alias = models.CharField(max_length=50)
+    json_content = models.CharField(max_length=4096)
+
+    def __str__(self):
+        return self.name
+
+
 class Event(models.Model):
     name = models.CharField(max_length=50)
-    form_name = models.CharField(max_length=50)
+    form = models.ForeignKey(EventForm)
     event_date = models.DateTimeField()
     place = models.ForeignKey(Place)
     close_date = models.DateTimeField()
