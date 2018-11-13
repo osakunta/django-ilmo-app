@@ -1,8 +1,14 @@
-language: python
-python: "3.6"
-install: pip install -r requirements.txt
-install: pip install coveralls
-script: ./scripts/create_test_env.sh
-script: ./scripts/run_tests.sh --teardown
-script: coverage run --source=your_app manage.py test ilmo_app
-after_success: coveralls
+language:
+ - python
+python:
+ - "3.6"
+install:
+ - pip install -r requirements.txt
+ - pip install coveralls
+script:
+ - source scripts/env.sh
+ - ./scripts/create_test_env.sh
+ - cd ${sitename} && coverage run --source='./ilmo_app' manage.py test ilmo_app && cd ..
+ - ./scripts/run_tests.sh --teardown
+after_success:
+- coveralls
