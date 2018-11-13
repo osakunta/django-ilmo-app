@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/osakunta/django-ilmo-app.svg?branch=master)](https://travis-ci.org/osakunta/django-ilmo-app)
+
 ## Ilmo app
 Django app for event registration and event management
 
