@@ -46,7 +46,7 @@ class EventForm(models.Model):
 
 class Event(models.Model):
     name = models.CharField(max_length=50)
-    url_alias = models.CharField(max_length=50)
+    url_alias = models.CharField(max_length=50, unique=True)
     form = models.ForeignKey(EventForm, null=True)
     event_date = models.DateTimeField()
     place = models.ForeignKey(Place)
