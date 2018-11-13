@@ -38,7 +38,6 @@ class Payment(models.Model):
 
 class EventForm(models.Model):
     name = models.CharField(max_length=50)
-    url_alias = models.CharField(max_length=50)
     json_content = models.CharField(max_length=4096)
 
     def __str__(self):
@@ -47,6 +46,7 @@ class EventForm(models.Model):
 
 class Event(models.Model):
     name = models.CharField(max_length=50)
+    url_alias = models.CharField(max_length=50)
     form = models.ForeignKey(EventForm, null=True)
     event_date = models.DateTimeField()
     place = models.ForeignKey(Place)
