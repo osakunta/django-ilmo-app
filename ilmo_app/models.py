@@ -9,7 +9,6 @@ class EventCannotAttendException(Exception):
     pass
 
 
-# DB MODELS
 class Place(models.Model):
     name = models.CharField(max_length=50)
     address = models.CharField(max_length=50, blank=True)
