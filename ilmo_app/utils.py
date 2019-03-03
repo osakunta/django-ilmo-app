@@ -147,7 +147,6 @@ class FieldGenerator:
 
 
 def validate_json(f):
-    import json
     payload = json.load(f)
     for i in payload:
         if 'type' not in i.keys():
