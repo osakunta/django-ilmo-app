@@ -17,6 +17,6 @@ def send_confirmation_mail(event, attendee, template):
                                 dict(event=event, attendee=attendee))
     send_mail(subject=fi.registrationEmailSubject,
               message=msg_html,
-              from_email=getattr(settings, 'ILMO_EMAIL_CONFIRMATION_FROM', 'noreply@satakuntatalo.fi'),
+              from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'noreply@satakuntatalo.fi'),
               html_message=msg_html,
               recipient_list=[attendee.attendee_email])
