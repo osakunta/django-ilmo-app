@@ -2,6 +2,7 @@ from django.test import TestCase
 from .models import Event, EventAttendee, Place, EventCannotAttendException
 from datetime import date, timedelta
 from django.utils import timezone
+import uuid
 
 PLACE_MOCK = {'name': 'Place'}
 EVENT_MOCKS = [
@@ -19,7 +20,7 @@ EVENT_MOCKS = [
 def create_events():
     place = Place.objects.create(**PLACE_MOCK)
     for event in EVENT_MOCKS:
-        Event.objects.create(**event, place=place)
+        Event.objects.create(**event, url_alias=uuid.uuid4(), place=place)
 
 
 def attend_event(event, times=1):
