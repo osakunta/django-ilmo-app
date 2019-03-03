@@ -368,6 +368,12 @@
                                                         <td>{{ attendee.get_reference_number }}</td>
                                                     </tr>
                                                 {% endif %}
+                                                {% if event.payment.due_to %}
+                                                    <tr>
+                                                        <td>Eräpäivä</td>
+                                                        <td>{{ event.payment.due_to|date:'d.m.Y' }}</td>
+                                                    </tr>
+                                                {% endif %}
                                             </table>
                                         {% endif %}
                                         <br/>
