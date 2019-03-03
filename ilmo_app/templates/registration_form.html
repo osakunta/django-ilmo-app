@@ -24,6 +24,10 @@
   </tr>
   {% endif %}
   <tr>
+    <td>Ilmoittautuminen alkaa</td>
+    <td>{{event.open_date}}</td>
+  </tr>
+  <tr>
     <td>Ilmoittautuminen päättyy</td>
     <td>{{event.close_date}}</td>
   </tr>
@@ -37,10 +41,13 @@
   </tr>
 </table>
 {{event.description}}
-{% if event.is_full and not event.backup %}
-<p>Tapahtuma on täynnä.</p>
+
+{% if not event.is_yet_open_for_registration %}
+<p>Tapahtumaan ei voi vielä ilmoittautua. Ilmoittautuminen alkaa {{ event.open_date }}.</p>
 {% elif event.is_past %}
 <p>Ilmoittautuminen on päättynyt.</p>
+{% elif event.is_full and not event.backup %}
+<p>Tapahtuma on täynnä.</p>
 {% else %}
 <h3>Ilmoittautumislomake</h3>
 {% if event.backup and event.is_full %}
@@ -50,7 +57,7 @@
   {% csrf_token %}
   <table class='table'>
     {{ form.as_table }}
-  </table> 
+  </table>
 <div class="form-group">
 <input type="checkbox" onchange="document.getElementById('ilmoittaudu').disabled = !this.checked;" />  Hyväksyn, että tietojani käytetään tapahtuman järjestämiseen.<br><br>
 <input type="Submit" value="ilmoittaudu" id="ilmoittaudu" class="btn btn-primary btn-block" disabled=True/>
@@ -61,12 +68,12 @@
 <div id="ilmoittautuneet" style="display: none;">
 <table class='table table-borderless'>
 <tr>
-<th>Nimi</th>{% if payment.method == "Tilisiirto" %}<th>Viitenumero</th>{% endif %}
+<th>Nimi</th>{% if payment and payment.method == "Tilisiirto" %}<th>Viitenumero</th>{% endif %}
 </tr>
 {% for attendee in attendees %}
 <tr>
 <td>{{attendee.attendee_name}} {% if attendee.isbackup %} (varalla) {% endif %}</td>
-{% if payment.method == "Tilisiirto" %} <td>{{attendee.reference_number}}</td> {% endif %}
+{% if payment and payment.method == "Tilisiirto" %} <td>{{attendee.reference_number}}</td> {% endif %}
 </tr>
 {% endfor %}
 </table>

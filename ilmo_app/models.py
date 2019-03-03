@@ -44,23 +44,42 @@ class EventForm(models.Model):
 
 
 class Event(models.Model):
-    name = models.CharField(max_length=50)
-    url_alias = models.CharField(max_length=50, unique=True)
-    form = models.ForeignKey(EventForm, null=True)
-    event_date = models.DateTimeField()
-    place = models.ForeignKey(Place)
-    close_date = models.DateTimeField()
-    fb_url = models.URLField(blank=True)
-    capacity = models.PositiveIntegerField(blank=True, null=True)
-    payment = models.ForeignKey(Payment, null=True, blank=True)
-    image_url = models.CharField(max_length=1000, blank=True)
-    description = HTMLField()
-    thank_you_text = HTMLField()
-    backup = models.BooleanField(verbose_name="Accept backup seats?", default=True)
-    hide = models.BooleanField(verbose_name="Hide event from listing", default=False)
+    name = models.CharField(max_length=50,
+                            verbose_name='Tapahtuman nimi')
+    url_alias = models.CharField(max_length=50,
+                                 unique=True,
+                                 verbose_name='URL-nimi')
+    form = models.ForeignKey(EventForm,
+                             null=True,
+                             verbose_name='Lomake')
+    event_date = models.DateTimeField(verbose_name='Tapahtuman ajankohta')
+    place = models.ForeignKey(Place, verbose_name='Tapahtuman paikka')
+    open_date = models.DateTimeField(verbose_name='Lomakkeen alkamisaika',
+                                     null=True,
+                                     blank=True,
+                                     default=timezone.datetime(2018, 1, 1))
+    close_date = models.DateTimeField(verbose_name='Lomakkeen sulkemisaika')
+    fb_url = models.URLField(blank=True, verbose_name='Linkki Facebook-tapahtumaan')
+    capacity = models.PositiveIntegerField(blank=True,
+                                           null=True,
+                                           verbose_name='Osallistujien enimmäismäärä')
+    payment = models.ForeignKey(Payment,
+                                null=True,
+                                blank=True,
+                                verbose_name='Maksutapa')
+    image_url = models.CharField(max_length=1000,
+                                 blank=True,
+                                 verbose_name='Linkki otsakekuvaan')
+    description = HTMLField(verbose_name='Tapahtumakuvaus')
+    thank_you_text = HTMLField(verbose_name='Teksti, joka näytetään lomakkeen lähettämisen jälkeen')
+    backup = models.BooleanField(verbose_name='Tapahtumaan voi osallistua varasijalle?', default=True)
+    hide = models.BooleanField(verbose_name='Piilota tapahtuma listauksesta?', default=False)
 
     def __str__(self):
         return self.name
+
+    def is_yet_open_for_registration(self):
+        return not self.open_date or self.open_date < timezone.now()
 
     def is_past(self):
         if timezone.now() > self.close_date:
@@ -75,7 +94,16 @@ class Event(models.Model):
         return False
 
     def is_hide(self):
-        return self.hide
+        return self.hide or self.open_date < timezone.now()
+
+    @classmethod
+    def coming_events(cls):
+        return Event.objects.filter(event_date__gte=timezone.now()).filter(hide=False)
+
+    @classmethod
+    def head_past_events(cls, days=14):
+        return Event.objects.filter(event_date__lte=timezone.now(),
+                                    event_date__gte=timezone.now() - timezone.timedelta(days=days))
 
 
 class EventAttendee(models.Model):
@@ -126,6 +154,8 @@ class EventAttendee(models.Model):
         return 0 if ret == 0 else int(10 - ret)
 
     def get_reference_number(self):
+        if not self.event.payment:
+            return None
         r = self.event.payment.reference_number
         if r is None:
             return r

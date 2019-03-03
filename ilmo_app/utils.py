@@ -1,7 +1,8 @@
-from .models import EventAttendee
-from .config import *
+from .models import EventAttendee, Place, Payment, Event
+from .config import RESOURCE_PATH
 from django import forms
 from django.utils.encoding import smart_str
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.utils import timezone
 import json
@@ -139,19 +140,38 @@ class FieldGenerator:
     def create_field_for_radioselect(field, options):
         options['choices'] = [(i, i) for i in field['options']]
         return forms.ChoiceField(widget=forms.RadioSelect(), **options)
-        #return FieldGenerator.create_field_for_select(field, {**options, 'widget': forms.RadioSelect()})
 
     @staticmethod
     def create_field_for_checkbox(field, options):
         return forms.BooleanField(widget=forms.CheckboxInput, **options)
 
+
 def validate_json(f):
-  import json
-  payload = json.load(f)
-  for i in payload:
-    if 'type' not in i.keys():
-      raise KeyError
-    elif 'name' not in i.keys():
-      raise KeyError
-  # WIP
-  return True
+    import json
+    payload = json.load(f)
+    for i in payload:
+        if 'type' not in i.keys():
+            raise KeyError
+        elif 'name' not in i.keys():
+            raise KeyError
+    return True
+
+
+def get_event_details_by_url_alias(url_alias):
+    event = get_object_or_404(Event, url_alias=url_alias)
+    place = Place.objects.get(id=event.place_id)
+
+    if event.payment_id:
+        payment = Payment.objects.get(id=event.payment_id)
+    else:
+        payment = None
+
+    attendee_list = [dict(attendee_name=a.attendee_name,
+                          is_backup=a.isbackup,
+                          reference_number=a.get_reference_number())
+                     for a in EventAttendee.objects.filter(event=event.id)]
+
+    return dict(event=event,
+                attendees=attendee_list,
+                place=place,
+                payment=payment)

@@ -1,67 +1,71 @@
-from django.shortcuts import render
-from django.utils import timezone
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
+from django.shortcuts import render, redirect
 from django.http import Http404
-from django.shortcuts import get_object_or_404
-from .config import *
-from .models import EventForm, Event, EventAttendee, Place, Payment
+from django.conf import settings
+from django.views.decorators.http import require_http_methods
+from .models import Event
 from .forms import get_form
-from .utils import save_event_attendee, merge_dicts
+from .utils import save_event_attendee, merge_dicts, \
+    get_event_details_by_url_alias
+from .email import send_confirmation_mail
 
 
+@require_http_methods(['GET'])
 def get_all_events(request):
     events = Event.objects.filter(hide=False)
-    return render(request, 'list.html', {'event_list': events})
+    return render(request,
+                  'list.html',
+                  dict(event_list=events))
 
 
+@require_http_methods(['GET'])
 def get_coming_events(request):
-    coming_events = Event.objects.filter(event_date__gte=timezone.now()).filter(hide=False)
-    head_past_events = Event.objects.filter(event_date__lte=timezone.now(),
-                                            event_date__gte=timezone.now() - timezone.timedelta(days=14))
     return render(request, 'list.html',
-                  {'coming_events': coming_events, 'head_past_events': head_past_events, 'coming': True})
+                  dict(coming_events=Event.coming_events(),
+                       head_past_events=Event.head_past_events(),
+                       coming=True))
 
 
+@require_http_methods(['GET'])
 def index(request):
-    return render(request, 'index.html', {'content': "This is Ilmo App"})
+    return render(request,
+                  'index.html',
+                  dict(content="This is Ilmo App"))
 
 
+@require_http_methods(['GET'])
 def thanks(request):
-    return render(request, 'index.html', {'content': "Thank you for registration"})
+    return render(request,
+                  'thanks.html',
+                  dict(content="""
+                  Ilmoittautumisesi on vastaanotettu.
+                  Vahvistus ilmoittautumisestasi on lähetetty antamaasi sähköpostiosoitteeseen.
+                  """))
 
 
-def parse_event_form(request, url_alias):
+def registration_form(request, url_alias):
+    if request.method == 'GET':
+        return get_event_form(request, url_alias)
+    elif request.method == 'POST':
+        return submit_registration(request, url_alias)
+
+
+def get_event_form(request, url_alias):
     event_details = get_event_details_by_url_alias(url_alias)
-    if request.method == 'POST':
-        form = get_form(url_alias)(request.POST)
-        if form.is_valid():
-            attendee = save_event_attendee(event_details['event'], form.cleaned_data)
-            if EMAIL_CONFIGURED:
-                msg_html = render_to_string(EMAIL_TEMPLATE_PATH + "registration",
-                                            {'attendee': attendee, 'event': event_details['event'],
-                                             'payment': event_details['payment']})
-                send_mail('Thank you for registration to ' + event_details['event'].name, msg_html, 'sender@mail.com',
-                          [attendee.attendee_email], html_message=msg_html, )
-            return render(request, 'thanks.html',
-                          {'attendee': attendee, 'event': event_details['event'], 'payment': event_details['payment']})
-    else:
-        form = get_form(url_alias)
-        if not form:
-            raise Http404("Lomaketta ei löydy")
-    data = merge_dicts(event_details, {'form': form})
+    form = get_form(url_alias)
+    if not form:
+        raise Http404("Lomaketta ei löydy")
+    data = merge_dicts(event_details, dict(form=form))
     return render(request, 'registration_form.html', data)
 
 
-def get_event_details_by_url_alias(url_alias):
-    event = get_object_or_404(Event, url_alias=url_alias)
-    attendees = EventAttendee.objects.filter(event=event.id)
-    place = Place.objects.get(id=event.place_id)
-    payment = Payment.objects.get(id=event.payment_id)
-    attendee_list = []
-    for a in attendees:
-        attendee = dict(attendee_name=a.attendee_name,
-                        isbackup=a.isbackup,
-                        reference_number=a.get_reference_number())
-        attendee_list.append(attendee)
-    return {'event': event, 'attendees': attendee_list, 'place': place, 'payment': payment}
+def submit_registration(request, url_alias):
+    event_details = get_event_details_by_url_alias(url_alias)
+    form = get_form(url_alias)(request.POST)
+    if form.is_valid():
+        attendee = save_event_attendee(event_details['event'],
+                                       form.cleaned_data)
+        if getattr(settings, 'ILMO_EMAIL_CONFIGURED'):
+            send_confirmation_mail(event_details['event'],
+                                   attendee,
+                                   'registration_fi')
+        return redirect('thanks')
