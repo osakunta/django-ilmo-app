@@ -14,7 +14,7 @@ def send_confirmation_mail(event, attendee, template):
         return
 
     msg_html = render_to_string('%s/%s.html' % (template_path, template),
-                                dict(event=event, attendee=attendee), debug=True)
+                                dict(event=event, attendee=attendee))
     send_mail(subject=fi.registrationEmailSubject,
               message=msg_html,
               from_email=getattr(settings, 'ILMO_FROM_EMAIL', 'noreply@mysite.com'),

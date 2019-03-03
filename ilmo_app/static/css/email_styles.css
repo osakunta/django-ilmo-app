@@ -51,7 +51,7 @@ table td {
 /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
 .container {
     display: block;
-    margin: 0 auto !important;
+    margin: 0 auto;
     /* makes it centered */
     max-width: 580px;
     padding: 10px;
@@ -193,8 +193,8 @@ hr {
 ------------------------------------- */
 @media only screen and (max-width: 620px) {
     table[class=body] h1 {
-        font-size: 28px !important;
-        margin-bottom: 10px !important;
+        font-size: 28px;
+        margin-bottom: 10px;
     }
 
     table[class=body] p,
@@ -203,31 +203,31 @@ hr {
     table[class=body] td,
     table[class=body] span,
     table[class=body] a {
-        font-size: 16px !important;
+        font-size: 16px;
     }
 
     table[class=body] .wrapper,
     table[class=body] .content {
-        padding: 0 !important;
+        padding: 0;
     }
 
     table[class=body] .container {
-        padding: 0 !important;
-        width: 100% !important;
+        padding: 0;
+        width: 100%;
     }
 
     table[class=body] .main {
-        border-left-width: 0 !important;
-        border-radius: 0 !important;
-        border-right-width: 0 !important;
+        border-left-width: 0;
+        border-radius: 0;
+        border-right-width: 0;
     }
 
     table[class=body] .btn table {
-        width: 100% !important;
+        width: 100%;
     }
 
     table[class=body] .btn a {
-        width: 100% !important;
+        width: 100%;
     }
 
 }
@@ -237,20 +237,20 @@ hr {
 ------------------------------------- */
 @media all {
     .apple-link a {
-        color: inherit !important;
-        font-family: inherit !important;
-        font-size: inherit !important;
-        font-weight: inherit !important;
-        line-height: inherit !important;
-        text-decoration: none !important;
+        color: inherit;
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        line-height: inherit;
+        text-decoration: none;
     }
 
     .btn-primary table td:hover {
-        background-color: #34495e !important;
+        background-color: #34495e;
     }
 
     .btn-primary a:hover {
-        background-color: #34495e !important;
-        border-color: #34495e !important;
+        background-color: #34495e;
+        border-color: #34495e;
     }
 }
