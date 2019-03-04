@@ -113,7 +113,7 @@ class FieldGenerator:
 
     @staticmethod
     def create_field_for_text(field, options):
-        options['max_length'] = int(field.get("max_length", "50"))
+        options['max_length'] = int(field.get("max_length", "500"))
         return forms.CharField(**options)
 
     @staticmethod

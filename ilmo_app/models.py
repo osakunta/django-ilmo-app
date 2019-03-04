@@ -108,11 +108,11 @@ class Event(models.Model):
 
 class EventAttendee(models.Model):
     event = models.ForeignKey(Event)
-    attendee_name = models.CharField(max_length=50)
+    attendee_name = models.CharField(max_length=100)
     attendee_email = models.CharField(max_length=50, blank=True)
     attendee_phone = models.CharField(max_length=50, blank=True)
     attendee_gender = models.CharField(max_length=50, blank=True)
-    attendee_details = models.CharField(max_length=500, blank=True)
+    attendee_details = models.CharField(max_length=10000, blank=True)
     isbackup = models.BooleanField(verbose_name="Is a backup?", default=False)
     registration_date = models.DateTimeField()
     haspaid = models.BooleanField(verbose_name="Has paid?", default=False)
