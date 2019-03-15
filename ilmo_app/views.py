@@ -43,7 +43,7 @@ def thanks(request):
 
 
 def registration_form(request, url_alias):
-    if request.method == 'GET':
+    if request.method in ['GET', 'HEAD']:
         return get_event_form(request, url_alias)
     elif request.method == 'POST':
         return submit_registration(request, url_alias)
