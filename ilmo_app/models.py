@@ -58,7 +58,8 @@ class Event(models.Model):
     form = models.ForeignKey(
         EventForm,
         null=True,
-        verbose_name='Lomake'
+        verbose_name='Lomake',
+        on_delete=models.PROTECT
     )
 
     event_date = models.DateTimeField(
@@ -67,7 +68,8 @@ class Event(models.Model):
 
     place = models.ForeignKey(
         Place,
-        verbose_name='Tapahtuman paikka'
+        verbose_name='Tapahtuman paikka',
+        on_delete=models.PROTECT
     )
 
     open_date = models.DateTimeField(
@@ -96,7 +98,8 @@ class Event(models.Model):
         Payment,
         null=True,
         blank=True,
-        verbose_name='Maksutapa'
+        verbose_name='Maksutapa',
+        on_delete=models.PROTECT
     )
 
     image_url = models.CharField(
@@ -142,7 +145,7 @@ class Event(models.Model):
 
 
 class EventAttendee(models.Model):
-    event = models.ForeignKey(Event)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
     attendee_name = models.CharField(max_length=100)
     attendee_email = models.CharField(max_length=50, blank=True)
     attendee_phone = models.CharField(max_length=50, blank=True)
