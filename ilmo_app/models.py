@@ -44,32 +44,70 @@ class EventForm(models.Model):
 
 
 class Event(models.Model):
-    name = models.CharField(max_length=50,
-                            verbose_name='Tapahtuman nimi')
-    url_alias = models.CharField(max_length=50,
-                                 unique=True,
-                                 verbose_name='URL-nimi')
-    form = models.ForeignKey(EventForm,
-                             null=True,
-                             verbose_name='Lomake')
-    event_date = models.DateTimeField(verbose_name='Tapahtuman ajankohta')
-    place = models.ForeignKey(Place, verbose_name='Tapahtuman paikka')
-    open_date = models.DateTimeField(verbose_name='Lomakkeen alkamisaika',
-                                     null=True,
-                                     blank=True,
-                                     default=timezone.datetime(2018, 1, 1))
-    close_date = models.DateTimeField(verbose_name='Lomakkeen sulkemisaika')
-    fb_url = models.URLField(blank=True, verbose_name='Linkki Facebook-tapahtumaan')
-    capacity = models.PositiveIntegerField(blank=True,
-                                           null=True,
-                                           verbose_name='Osallistujien enimmäismäärä')
-    payment = models.ForeignKey(Payment,
-                                null=True,
-                                blank=True,
-                                verbose_name='Maksutapa')
-    image_url = models.CharField(max_length=1000,
-                                 blank=True,
-                                 verbose_name='Linkki otsakekuvaan')
+    name = models.CharField(
+        max_length=50,
+        verbose_name='Tapahtuman nimi'
+    )
+
+    url_alias = models.CharField(
+        max_length=50,
+        unique=True,
+        verbose_name='URL-nimi'
+    )
+
+    form = models.ForeignKey(
+        EventForm,
+        null=True,
+        verbose_name='Lomake',
+        on_delete=models.PROTECT
+    )
+
+    event_date = models.DateTimeField(
+        verbose_name='Tapahtuman ajankohta'
+    )
+
+    place = models.ForeignKey(
+        Place,
+        verbose_name='Tapahtuman paikka',
+        on_delete=models.PROTECT
+    )
+
+    open_date = models.DateTimeField(
+        verbose_name='Lomakkeen alkamisaika',
+        null=True,
+        blank=True,
+        default=timezone.datetime(2018, 1, 1)
+    )
+
+    close_date = models.DateTimeField(
+        verbose_name='Lomakkeen sulkemisaika'
+    )
+
+    fb_url = models.URLField(
+        blank=True,
+        verbose_name='Linkki Facebook-tapahtumaan'
+    )
+
+    capacity = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        verbose_name='Osallistujien enimmäismäärä'
+    )
+
+    payment = models.ForeignKey(
+        Payment,
+        null=True,
+        blank=True,
+        verbose_name='Maksutapa',
+        on_delete=models.PROTECT
+    )
+
+    image_url = models.CharField(
+        max_length=1000,
+        blank=True,
+        verbose_name='Linkki otsakekuvaan'
+    )
+
     description = HTMLField(verbose_name='Tapahtumakuvaus')
     thank_you_text = HTMLField(verbose_name='Teksti, joka näytetään lomakkeen lähettämisen jälkeen')
     backup = models.BooleanField(verbose_name='Tapahtumaan voi osallistua varasijalle?', default=True)
@@ -107,7 +145,7 @@ class Event(models.Model):
 
 
 class EventAttendee(models.Model):
-    event = models.ForeignKey(Event)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
     attendee_name = models.CharField(max_length=100)
     attendee_email = models.CharField(max_length=50, blank=True)
     attendee_phone = models.CharField(max_length=50, blank=True)
