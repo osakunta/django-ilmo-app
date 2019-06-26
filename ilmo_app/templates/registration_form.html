@@ -11,7 +11,13 @@
 <table class='table'>
   <tr>
     <td>Aika</td>
-    <td>{{event.event_date}}</td>
+  <td>
+      {% if event.show_hhmm %}
+          {{ event.event_date }}
+      {% else %}
+          {{ event.event_date|date:"d.m.Y" }}
+      {% endif %}
+  </td>
   </tr>
   <tr>
     <td>Paikka</td>
@@ -25,7 +31,7 @@
   {% endif %}
   <tr>
     <td>Ilmoittautuminen alkaa</td>
-    <td>{{event.open_date}}</td>
+    <td>{{ event.open_date }}</td>
   </tr>
   <tr>
     <td>Ilmoittautuminen päättyy</td>

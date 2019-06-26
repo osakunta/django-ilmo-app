@@ -53,6 +53,7 @@ class Event(models.Model):
                              null=True,
                              verbose_name='Lomake')
     event_date = models.DateTimeField(verbose_name='Tapahtuman ajankohta')
+    show_hhmm = models.BooleanField(verbose_name='Näytä tt:mm', default=True)
     place = models.ForeignKey(Place, verbose_name='Tapahtuman paikka')
     open_date = models.DateTimeField(verbose_name='Lomakkeen alkamisaika',
                                      null=True,
