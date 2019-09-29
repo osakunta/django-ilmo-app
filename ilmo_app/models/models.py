@@ -3,17 +3,37 @@ import json
 from django.db import models
 from django.utils import timezone
 from djangocms_text_ckeditor.fields import HTMLField
+from .exceptions import EventCannotAttendException, InvalidPaymentMethod
 
-
-class EventCannotAttendException(Exception):
-    pass
+__all__ = [
+    'Place',
+    'Payment',
+    'EventForm',
+    'Event',
+    'EventAttendee',
+]
 
 
 class Place(models.Model):
-    name = models.CharField(max_length=50)
-    address = models.CharField(max_length=50, blank=True)
-    zip_code = models.CharField(max_length=50, blank=True)
-    city = models.CharField(max_length=50, blank=True)
+    name = models.CharField(
+        verbose_name='Name',
+        max_length=50,
+    )
+    address = models.CharField(
+        verbose_name='Address',
+        max_length=50,
+        blank=True,
+    )
+    zip_code = models.CharField(
+        verbose_name='Zip code',
+        max_length=50,
+        blank=True,
+    )
+    city = models.CharField(
+        verbose_name='City',
+        max_length=50,
+        blank=True,
+    )
 
     def __str__(self):
         return self.name
@@ -22,22 +42,71 @@ class Place(models.Model):
 class Payment(models.Model):
     _payment_choices = ["Tilisiirto", "Käteinen", "Ilmainen", "Muu"]
 
-    name = models.CharField(max_length=50)
-    price = models.PositiveIntegerField(blank=True, null=True)
-    method = models.CharField(choices=[(i, i) for i in _payment_choices], max_length=100)
-    receiver = models.CharField(max_length=50, blank=True)
-    reference_number = models.PositiveIntegerField(blank=True, null=True)
-    due_to = models.DateField(blank=True, null=True)
-    account = models.CharField(blank=True, null=True, max_length=100)
-    special_price_offsets = models.CharField(max_length=1000, blank=True)
+    name = models.CharField(
+        verbose_name='Payment name',
+        max_length=50,
+    )
+
+    price = models.PositiveIntegerField(
+        verbose_name='Price',
+        blank=True,
+        null=True,
+    )
+
+    method = models.CharField(
+        verbose_name='Payment method',
+        choices=[(i, i) for i in _payment_choices],
+        max_length=50,
+    )
+
+    receiver = models.CharField(
+        verbose_name='Beneficiary',
+        max_length=50,
+        blank=True,
+    )
+
+    reference_number = models.PositiveIntegerField(
+        verbose_name='Reference number',
+        blank=True,
+        null=True,
+    )
+
+    due_to = models.DateField(
+        verbose_name='Due to date',
+        blank=True,
+        null=True,
+    )
+    account = models.CharField(
+        verbose_name='Account number',
+        blank=True,
+        null=True,
+        max_length=100,
+    )
+
+    special_price_offsets = models.CharField(
+        verbose_name='Price offsets',
+        max_length=1000,
+        blank=True,
+    )
 
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        if self.method not in self._payment_choices:
+            raise InvalidPaymentMethod
+        super().save(*args, **kwargs)
+
 
 class EventForm(models.Model):
-    name = models.CharField(max_length=50)
-    json_content = models.CharField(max_length=4096)
+    name = models.CharField(
+        verbose_name='Form name',
+        max_length=50,
+    )
+    json_content = models.CharField(
+        verbose_name='JSON content',
+        max_length=4096,
+    )
 
     def __str__(self):
         return self.name
@@ -76,7 +145,7 @@ class Event(models.Model):
         verbose_name='Lomakkeen alkamisaika',
         null=True,
         blank=True,
-        default=timezone.datetime(2018, 1, 1)
+        default=timezone.datetime.now()
     )
 
     close_date = models.DateTimeField(
@@ -108,15 +177,27 @@ class Event(models.Model):
         verbose_name='Linkki otsakekuvaan'
     )
 
-    description = HTMLField(verbose_name='Tapahtumakuvaus')
-    thank_you_text = HTMLField(verbose_name='Teksti, joka näytetään lomakkeen lähettämisen jälkeen')
-    backup = models.BooleanField(verbose_name='Tapahtumaan voi osallistua varasijalle?', default=True)
-    hide = models.BooleanField(verbose_name='Piilota tapahtuma listauksesta?', default=False)
+    description = HTMLField(
+        verbose_name='Tapahtumakuvaus',
+    )
+
+    thank_you_text = HTMLField(
+        verbose_name='Teksti, joka näytetään lomakkeen lähettämisen jälkeen',
+    )
+
+    backup = models.BooleanField(
+        verbose_name='Tapahtumaan voi osallistua varasijalle?',
+        default=True,
+    )
+    hide = models.BooleanField(
+        verbose_name='Piilota tapahtuma listauksesta?',
+        default=False,
+    )
 
     def __str__(self):
         return self.name
 
-    def is_yet_open_for_registration(self):
+    def is_open_for_registration(self):
         return not self.open_date or self.open_date < timezone.now()
 
     def is_past(self):

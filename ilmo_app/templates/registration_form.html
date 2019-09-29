@@ -42,7 +42,7 @@
 </table>
 {{event.description}}
 
-{% if not event.is_yet_open_for_registration %}
+{% if not event.is_open_for_registration %}
 <p>Tapahtumaan ei voi vielä ilmoittautua. Ilmoittautuminen alkaa {{ event.open_date }}.</p>
 {% elif event.is_past %}
 <p>Ilmoittautuminen on päättynyt.</p>

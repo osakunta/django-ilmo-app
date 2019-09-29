@@ -1,0 +1,118 @@
+from django.test import TestCase
+from ilmo_app.models import Event, EventAttendee, Place, Payment
+from ilmo_app.models.exceptions import EventCannotAttendException, InvalidPaymentMethod
+from datetime import date, timedelta
+from django.utils import timezone
+import uuid
+
+
+class TestPaymentModel(TestCase):
+    def test_fails_with_invalid_choice(self):
+        with self.assertRaises(InvalidPaymentMethod):
+            Payment(name='Payment X',
+                    price=100,
+                    method='Foo').save()
+
+
+class TestEvent(TestCase):
+    def setUp(self):
+        _create_events()
+
+    def test_event_is_past(self):
+        event = Event.objects.get(name='EventInPast')
+        self.assertTrue(event.is_past())
+
+    def test_event_in_future_is_not_past(self):
+        event = Event.objects.get(name='EventInFuture')
+        self.assertFalse(event.is_past())
+
+    def test_event_is_not_open_yet(self):
+        event = Event.objects.get(name='EventWithOpenDateInFuture')
+        self.assertFalse(event.is_open_for_registration())
+
+    def test_event_open_for_registration(self):
+        event = Event.objects.get(name='EventWithPastOpenDate')
+        self.assertTrue(event.is_open_for_registration())
+
+    def test_event_is_not_full_with_capacity(self):
+        event = Event.objects.get(name='EventInPast')
+        self.assertTrue(event.capacity > 0)
+        self.assertFalse(event.is_full())
+
+    def test_event_is_full_when_capacity_zero(self):
+        event = Event.objects.get(name='EventWithZeroCapacity')
+        self.assertEquals(event.capacity, 0)
+        self.assertTrue(event.is_full())
+
+    def test_cannot_attend_past_event(self):
+        event = Event.objects.get(name='EventInPast')
+        with self.assertRaises(EventCannotAttendException):
+            _attend_event(event, times=1)
+
+    def test_cannot_attend_full_event_without_backup(self):
+        event = Event.objects.get(name='EventInFuture')
+        event.backup = False
+        event.save()
+
+        _attend_event(event, event.capacity)
+        with self.assertRaises(EventCannotAttendException):
+            _attend_event(event, times=1)
+
+    def test_can_register_to_full_event_accepting_backups(self):
+        event = Event.objects.get(name='EventInFuture')
+        _attend_event(event, times=event.capacity)
+        event.refresh_from_db()
+        self.assertTrue(event.is_full())
+        _attend_event(event, times=1)
+
+    def test_can_attend_future_event(self):
+        event = Event.objects.get(name='EventInFuture')
+        self.assertEquals(len(EventAttendee.objects.all()), 0)
+        _attend_event(event, times=1)
+        self.assertEquals(len(EventAttendee.objects.all()), 1)
+
+    def test_event_is_full_when_number_of_attendees_equals_capacity(self):
+        event = Event.objects.get(name='EventInFuture')
+        capacity = event.capacity
+        _attend_event(event, times=capacity)
+        self.assertTrue(event.is_full())
+
+
+class EventAttendeeTestCase(TestCase):
+
+
+def _create_events():
+    place = {'name': 'Place'}
+    events = [
+        {'name': 'EventInPast', 'event_date': timezone.now() - timedelta(minutes=1), 'capacity': 1,
+         'close_date': timezone.now() - timedelta(days=1), 'description': 'empty'},
+        {'name': 'EventWithZeroCapacity', 'event_date': date(2015, 1, 1), 'capacity': 0,
+         'close_date': timezone.now() + timedelta(days=1), 'description': 'empty', 'backup': False},
+        {'name': 'Event2', 'event_date': date(2015, 1, 1), 'capacity': 1,
+         'close_date': timezone.now() + timedelta(days=1), 'description': 'empty'},
+        {'name': 'Event3', 'event_date': date(2015, 1, 1), 'capacity': 1,
+         'close_date': timezone.now() + timedelta(days=1), 'description': 'empty'},
+        {'name': 'EventInFuture', 'event_date': timezone.now() + timedelta(hours=1), 'capacity': 1,
+         'close_date': timezone.now() + timedelta(days=1), 'description': 'empty'},
+        {'name': 'EventWithOpenDateInFuture',
+         'event_date': timezone.now() + timedelta(days=1),
+         'capacity': 1,
+         'close_date': timezone.now() + timedelta(days=1),
+         'description': 'empty',
+         'open_date': timezone.now() + timedelta(days=1)},
+        {'name': 'EventWithPastOpenDate',
+         'event_date': timezone.now() + timedelta(days=1),
+         'capacity': 1,
+         'close_date': timezone.now() + timedelta(days=1),
+         'description': 'empty',
+         'open_date': timezone.now() - timedelta(days=1)}
+    ]
+
+    place = Place.objects.create(**place)
+    for event in events:
+        Event.objects.create(**event, url_alias=uuid.uuid4(), place=place)
+
+
+def _attend_event(event, times=1):
+    for i in range(0, times):
+        EventAttendee(event=event, attendee_name="Name", registration_date=timezone.now()).save()
