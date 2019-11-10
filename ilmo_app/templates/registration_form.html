@@ -43,15 +43,15 @@
 {{event.description}}
 
 {% if not event.is_open_for_registration %}
-<p>Tapahtumaan ei voi vielä ilmoittautua. Ilmoittautuminen alkaa {{ event.open_date }}.</p>
+<p><i>Tapahtumaan ei voi vielä ilmoittautua. Ilmoittautuminen alkaa {{ event.open_date }}.</i></p>
 {% elif event.is_past %}
-<p>Ilmoittautuminen on päättynyt.</p>
+<p><i>Ilmoittautuminen on päättynyt.</i></p>
 {% elif event.is_full and not event.backup %}
-<p>Tapahtuma on täynnä.</p>
+<p><i>Tapahtuma on täynnä.</i></p>
 {% else %}
 <h3>Ilmoittautumislomake</h3>
 {% if event.backup and event.is_full %}
-<p>Tapahtuma on täynnä, ilmoittaudut varasijalle.</p>
+<p><i>Tapahtuma on täynnä, ilmoittaudut varasijalle.</i></p>
 {% endif %}
 <form action="" role="form" method="post">
   {% csrf_token %}
