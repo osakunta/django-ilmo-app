@@ -50,17 +50,24 @@ mark_as_paid.short_description = 'Mark as paid'
 
 
 def save_event_attendee(event_object, data):
-    isfull = event_object.is_full()
-    gender = get_gender(data['name'])
+    data = {k: {False: 'No', True: 'Yes'}.get(v, v) for k, v in data.items()}
+
+    name = data.pop('name', 'N/A')
+    email = data.pop('email', 'N/A')
+    phone = data.pop('phone', 'N/A')
+
+    gender = get_gender(name)
+    details = json.dumps(data)
+
     ea = EventAttendee(event=event_object,
-                       attendee_name=data.pop('name', 'N/A'),
+                       attendee_name=name,
                        attendee_gender=gender,
-                       attendee_email=data.pop('email', 'N/A'),
-                       attendee_phone=data.pop('phone', 'N/A'),
-                       attendee_details=str(data).replace("'", "\"").replace("False", "\"No\"").replace("True",
-                                                                                                        "\"Yes\""),
-                       isbackup=isfull,
+                       attendee_email=email,
+                       attendee_phone=phone,
+                       attendee_details=details,
+                       isbackup=event_object.is_full(),
                        registration_date=timezone.now())
+
     ea.save()
     return ea
 
